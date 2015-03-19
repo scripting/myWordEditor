@@ -1,0 +1,89 @@
+body {
+	font-family: Ubuntu;
+	font-size: 18px;
+	background-color: whitesmoke;
+	}
+.divPageBody {
+	width: 65%;
+	margin-top: 90px;
+	margin-left: 10%;
+	}
+.myTextArea {
+	font-family: "Ubuntu";
+	font-size: 18px;
+	line-height: 24px;
+	
+	width: 100%; 
+	height: 400px;
+	border: 1px solid silver;
+	}
+.myDescriptionArea {
+	font-family: "Ubuntu";
+	font-size: 18px;
+	width: 100%; 
+	height: 70px;
+	border: 1px solid silver;
+	}
+.myInputItem {
+	font-family: "Ubuntu";
+	font-size: 18px;
+	width: 100%; 
+	font-size: 18px !important;
+	padding: 2px !important; 
+	height: 32px !important; 
+	}
+.form-horizontal .control-label {
+	width: 170px;
+	}
+.form-horizontal .control-group {
+	margin-bottom: 15px;
+	}
+label {
+	font-family: "Ubuntu";
+	font-size: 18px;
+	}
+.divVersionNumber {
+	font-size: 12px;
+	color: #777777;
+	float: right;
+	padding: 19px;
+	}
+.btnSave {
+	float: right;
+	width: 120px;
+	margin-top: 8px;
+	}
+.btnNew {
+	float: left;
+	width: 120px;
+	margin-top: 8px;
+	}
+.btnPublish {
+	float: right;
+	width: 120px;
+	margin-top: 8px;
+	}
+.divPublishedUrl {
+	font-size: 14px;
+	margin-top: 10px;
+	display: none;
+	}
+.divFileOpenDialog ul {
+	list-style-type: none;
+	}
+.divFileOpenDialog li {
+	line-height: 1.4em;
+	cursor: pointer;
+	}
+.divFileOpenDialog .btn {
+	width: 70px;
+	}
+.divLogonMessage {
+	font-size: 18px;
+	line-height: 1.5em;
+	margin-left: 25%;
+	margin-top: 15%;
+	}
+.divLogonMessage a {
+	cursor: pointer;
+	}

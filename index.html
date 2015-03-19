@@ -1,0 +1,193 @@
+<html>
+	<head>
+		<title>MyWord Editor</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<script src="http://fargo.io/code/jquery-1.9.1.min.js"></script>
+		<link href="http://fargo.io/code/bootstrap.css" rel="stylesheet">
+		<script src="http://fargo.io/code/bootstrap.min.js"></script>
+		
+		<link rel="stylesheet" href="http://fargo.io/code/fontAwesome/css/font-awesome.min.css"/>
+		<link href="http://fargo.io/code/ubuntuFont.css" rel="stylesheet" type="text/css">
+		<link href="http://fargo.io/code/ranchoFont.css" rel="stylesheet" type="text/css">
+		
+		<script src="http://fargo.io/code/node/shared/utils.js"></script>
+		<script src="http://fargo.io/code/node/shared/alertdialog.js"></script>
+		<script src="http://fargo.io/code/node/shared/confirmdialog.js"></script>
+		<script src="http://fargo.io/code/node/shared/askdialog.js"></script>
+		<script src="http://fargo.io/code/strftime.js"></script>
+		<script src="http://fargo.io/code/shared/ga.js"></script>
+		<script src="http://fargo.io/code/shared/app.js"></script>
+		<link href="http://fargo.io/code/shared/app.css" rel="stylesheet" type="text/css">
+		<script src="http://fargo.io/code/shared/appprefs.js"></script>
+		<script src="http://fargo.io/code/shared/menus.js"></script>
+		<link href="http://fargo.io/code/shared/menus.css" rel="stylesheet" type="text/css">
+		<script src="http://fargo.io/code/shared/buildrss.js"></script> 
+		
+		<script src="http://twitter.myword.io/api.js"></script>
+		<script src="scripts.js"></script>
+		<link href="styles.css" rel="stylesheet" type="text/css">
+		</head>
+	<body>
+		<div class="divMenubar" id="idMenubar">
+			<div class="topbar-wrapper" style="z-index: 5;">
+				<div class="navbar navbar-fixed-top" data-dropdown="dropdown">
+					<div class="divVersionNumber">
+						<span id="idSavedStatus">SAVED</span>&nbsp;<span id="idVersionNumber"></span>
+						</div>
+					<div class="navbar-inner">
+						<div class="container">
+							<a class="brand" href="/"><span id="idMenuProductName"></span></a>
+							<ul class="nav" id="idMainMenuList">
+								
+								<li class="dropdown" id="idEditorMenu"> 
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Editor&nbsp;<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a onclick="fileOpenDialog ();">Open file...</a></li>
+										<li class="divider"></li>
+										<li><a onclick="viewPublishedFile ();">View published file...</a></li>
+										<li><a onclick="viewFeed ();">View RSS feed...</a></li>
+										<li><a onclick="getPostsInJson ();">Get JSON backup...</a></li>
+										</ul>
+									</li>
+								<li class="dropdown" id="idDocsMenu"> 
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Docs&nbsp;<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a href="http://myword.smallpict.com/2015/03/06/welcomeToMywordEditor.html" target="_blank">MyWord docs</a></li>
+										<li class="divider"></li>
+										<li><a href="https://groups.google.com/forum/?fromgroups#!forum/myword-editor" target="_blank">Support mail list</a></li>
+										</ul>
+									</li>
+								
+								</ul>
+							<ul class="nav pull-right">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="idTwitterIcon"></span><span id="idTwitterUsername"></span>&nbsp;<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a onclick="aboutDialog ();">About <span id="idMenuAboutProductName"></span>...</a></li>
+										<li class="divider"></li>
+										<li><a onclick="settingsCommand ();">Settings...</a></li>
+										<li class="divider"></li>
+										<li><a onclick="twToggleConnectCommand (confirmDialog);" id="idTwitterConnectMenuItem"></a></li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<div class="divFileOpenDialog">
+			<div id="idFileOpenDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="attEditorLabel" aria-hidden="true">
+				<div class="modal-body">
+					<div id="idWhereToDisplayFileList">
+						</div>
+					</div>
+				<div class="modal-footer">
+					<a href="#" class="btn btn-primary" onclick="closeFileOpenDialog ();">Close</a>
+					</div>
+				</div>
+			</div>
+		<div class="divPrefsDialog" comment="This is the Settings dialog.">
+			<div id="idPrefsDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true">
+				<div class="modal-body">
+					<div class="divDialogElements">
+						<form method="POST">
+	<div class="divTabsFromOutline">
+	<div class="tabbable">
+		<ul class="nav nav-tabs" data-tabs="tabs">
+			<li class="active" ><a href="#idYou259"  data-toggle="tab">You</a></li>
+			<li><a href="#idFeed259"  data-toggle="tab">Feed</a></li>
+			<li><a href="#idImage259"  data-toggle="tab">Image</a></li>
+			</ul>
+		<div id="my-tab-content" class="tab-content">
+			<div class="active tab-pane" id="idYou259">
+				<fieldset>
+					<div class="divPrefs">	<div class="clearfix">	<label for="authorName">Name:</label>	<div class="input">		<input class="xlarge prefsInput" id="authorName" name="authorName" size="50" type="text" value="" placeholder="Your name." />		</div>	</div><div class="clearfix">	<label for="authorWebsite">Website:</label>	<div class="input">		<input class="xlarge prefsInput" id="authorWebsite" name="authorWebsite" size="50" type="text" value="" placeholder="Your website." />		</div>	</div>	</div>
+					</fieldset>
+						</div>
+					<div class="tab-pane" id="idFeed259">
+						<fieldset>
+							<div class="divPrefs">	<p>You can set the title, link and description for the RSS feed that Radio3 maintains.</p><div class="clearfix">	<label for="rssTitle">Title:</label>	<div class="input">		<input class="xlarge prefsInput" id="rssTitle" name="rssTitle" size="50" type="text" value="" placeholder="The &lt;title> element for the feed." />		</div>	</div><div class="clearfix">	<label for="rssLink">Link:</label>	<div class="input">		<input class="xlarge prefsInput" id="rssLink" name="rssLink" size="50" type="text" value="" placeholder="The &lt;link> element for the feed." />		</div>	</div><div class="clearfix">	<label for="rssDescription">Description:</label>	<div class="input">		<textarea class="xxlarge" id="rssDescription" name="rssDescription" cols="70" rows="3"placeholder="The &lt;description> element for the feed." ></textarea>		</div>	</div>	</div>
+							</fieldset>
+								</div>
+							<div class="tab-pane" id="idImage259">
+								<fieldset>
+									<div class="divPrefs">	<div class="clearfix">	<label for="flUseDefaultImage"></label>	<div class="input">		<input type="checkbox" name="flUseDefaultImage" value=xxx>&nbsp;Use default image if no image is specified.		</div>	</div><div class="clearfix">	<label for="defaultImageUrl">URL:</label>	<div class="input">		<input class="xlarge prefsInput" id="defaultImageUrl" name="defaultImageUrl" size="50" type="text" value="" placeholder="We'll use this image for essays where no image is specified." />		</div>	</div>	</div>
+									</fieldset>
+										</div>
+									</div>
+								</div>
+							</div>
+
+	</form>
+
+						</div>
+					</div>
+				<div class="modal-footer">
+					<a href="#" class="btn" onclick="prefsCloseDialog ();">Cancel</a>
+					<a href="#" class="btn btn-primary" onclick="prefsOkClicked ();">OK</a>
+					</div>
+				</div>
+			</div>
+		<div class="divPageBody">
+			<div class="divWholePageMessage" id="idEditor" style="display: none;">
+				<form class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="idTitle">Title:</label>
+						<div class="controls">
+							<input type="text" id="idTitle" class="myInputItem" placeholder="Appears in the title area of the page.">
+							</div>
+						</div>
+					<div class="control-group">
+						<label class="control-label" for="idDescription">Description:</label>
+						<div class="controls">
+							<textarea class="myDescriptionArea" id="idDescription" placeholder="Appears in smaller type below the title."></textarea>
+							</div>
+						</div>
+					<div class="control-group">
+						<label class="control-label" for="idImageUrl">Image URL:</label>
+						<div class="controls">
+							<input type="text" id="idImageUrl" class="xlarge myInputItem" placeholder="Background image of the title area of the page.">
+							</div>
+						</div>
+					<div class="control-group">
+						<label class="control-label" for="idTextArea">Body:</label>
+						<div class="controls">
+							<textarea class="myTextArea" id="idTextArea" onKeyUp="keyupTextArea ()" placeholder="Obviously this is a good place to write something."></textarea>
+							
+							<button id="idNewButton" class="btn btn-large btnNew" type="button" onclick="newButtonClick ();">New</button>
+							<button id="idPublishButton" class="btn btn-large btnPublish" type="button" onclick="publishButtonClick ();">Publish</button>
+							
+							<div class="divPublishedUrl" id="idPublishedUrl">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			<div class="divWholePageMessage" id="idLogonMessage" style="display: none;">
+				<div class="divLogonMessage">
+					<h2>Welcome to MyWord Editor!</h2>
+					<p>MyWord Editor is a simple way to create beautiful web essays. <a href="http://myword.io/users/davewiner/essays/004.html">Example</a>.</p>
+					<p>You can always backup all your essays, in a portable JSON-based format, so it's easy to switch to another service. The server for MyWord is open source. We hope to encourage other developers to create simple editing environments, so you don't have to be locked into a silo.</p>
+					<p>MyWord  was written by <a href="http://scripting.com/">Dave Winer</a>, who also developed the original blogging, feed reader and podcasting software.</p>
+					<p>Please <a onclick="twConnectToTwitter ()">sign on</a> to Twitter to access your stuff. We only use Twitter for identity. We won't read any of your posts, or post anything on your behalf.</p>
+					</div>
+				</div>
+			<div class="divWholePageMessage" id="idStartupFailBody" style="display: none;">
+				<div class="divLogonMessage">
+					<center>
+						There was a problem connecting with the server. 
+						Please wait a moment and reload the page.
+						</center>
+					</div>
+				</div>
+			</div>
+		<script>
+			$(document).ready (function () {
+				startup ();
+				});
+			</script>
+		</body>
+	</html>
