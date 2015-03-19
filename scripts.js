@@ -4,7 +4,7 @@ var appConsts = {
 	"description": "A simple way to edit myword.io pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //change this to point to your nodeStorage server
 	domain: "myword.io", 
-	version: "0.45"
+	version: "0.46"
 	}
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -461,18 +461,26 @@ function tellOtherInstancesToQuit () {
 	}
 function startup () {
 	console.log ("startup");
-	twStorageData.urlTwitterServer = appConsts.urlTwitterServer;
 	$("#idTwitterIcon").html (twStorageConsts.fontAwesomeIcon);
 	$("#idVersionNumber").html ("v" + appConsts.version);
-	initMenus ();
-	hitCounter (); 
-	initGoogleAnalytics (); 
 	$("#idEditor").keyup (function () {
 		whenLastUserAction = new Date ();
 		whenLastKeystroke = whenLastUserAction;
 		});
-	twGetOauthParams (); //redirects if OAuth params are present
+	initMenus ();
+	hitCounter (); 
+	initGoogleAnalytics (); 
 	tellOtherInstancesToQuit ();
+	
+	//determine the URL of the nodeStorage server -- 3/19/15 by DW
+		if (localStorage.urlTwitterServer !== undefined) {
+			twStorageData.urlTwitterServer = localStorage.urlTwitterServer;
+			}
+		else {
+			twStorageData.urlTwitterServer = appConsts.urlTwitterServer;
+			}
+	
+	twGetOauthParams (); //redirects if OAuth params are present
 	if (twIsTwitterConnected ()) {
 		twUserWhitelisted (twGetScreenName (), function (flwhitelisted) {
 			if (flwhitelisted) {
