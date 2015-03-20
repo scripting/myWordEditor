@@ -4,7 +4,7 @@ var appConsts = {
 	"description": "A simple way to edit myword.io pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //change this to point to your nodeStorage server
 	domain: "myword.io", 
-	version: "0.46"
+	version: "0.48"
 	}
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -41,6 +41,7 @@ var urlTemplateFile = "http://myword.io/template/template.html";
 var jsontextForLastSave;
 var whenLastUserAction = new Date (), whenLastKeystroke = whenLastUserAction;
 var randomMysteryString, ctCloseAttempts = 0;
+var fnameconfig = "config.json"; //3/20/15 by DW
 
 
 
@@ -406,6 +407,16 @@ function settingsCommand () {
 		prefsDialogShow ();
 		});
 	}
+function switchServer () { //3/19/15 by DW
+	askDialog ("URL of new server:", twStorageData.urlTwitterServer, "Enter the URL of your server here.", function (s, flcancel) {
+		if (!flcancel) {
+			localStorage.urlTwitterServer = s;
+			twStorageData.urlTwitterServer = s;
+			twDisconnectFromTwitter ();
+			twConnectToTwitter ();
+			}
+		});
+	}
 function initMenus () {
 	var cmdKeyPrefix = getCmdKeyPrefix (); //10/6/14 by DW
 	document.getElementById ("idMenuProductName").innerHTML = appConsts.productnameForDisplay; 
@@ -460,6 +471,28 @@ function tellOtherInstancesToQuit () {
 	localStorage.youAreNotNeeded = randomMysteryString; 
 	}
 function startup () {
+	var flSkipConfigRead = false;
+	function readConfigJson (flSkipConfigRead, callback) { //3/20/15 by DW
+		if (flSkipConfigRead) {
+			console.log ("readConfigJson: not reading config since localStorage value has been set.");
+			callback ();
+			}
+		else {
+			readHttpFile (fnameconfig, function (s) {
+				if (s !== undefined) { //the file exists and was read correctly
+					var jstruct = JSON.parse (s);
+					if (jstruct.urlTwitterServer !== undefined) {
+						twStorageData.urlTwitterServer = jstruct.urlTwitterServer;
+						console.log ("readConfigJson: twStorageData.urlTwitterServer == " + twStorageData.urlTwitterServer);
+						}
+					else {
+						console.log ("readConfigJson: " + fnameconfig + " contains " + jsonStringify (jstruct));
+						}
+					}
+				callback ();
+				});
+			}
+		}
 	console.log ("startup");
 	$("#idTwitterIcon").html (twStorageConsts.fontAwesomeIcon);
 	$("#idVersionNumber").html ("v" + appConsts.version);
@@ -471,57 +504,58 @@ function startup () {
 	hitCounter (); 
 	initGoogleAnalytics (); 
 	tellOtherInstancesToQuit ();
-	
+	twGetOauthParams (); //redirects if OAuth params are present
 	//determine the URL of the nodeStorage server -- 3/19/15 by DW
 		if (localStorage.urlTwitterServer !== undefined) {
 			twStorageData.urlTwitterServer = localStorage.urlTwitterServer;
+			flSkipConfigRead = true; //the localStorage value takes precedence
 			}
 		else {
 			twStorageData.urlTwitterServer = appConsts.urlTwitterServer;
 			}
-	
-	twGetOauthParams (); //redirects if OAuth params are present
-	if (twIsTwitterConnected ()) {
-		twUserWhitelisted (twGetScreenName (), function (flwhitelisted) {
-			if (flwhitelisted) {
-				twStorageStartup (appPrefs, function (flGoodStart) {
-					flStartupFail = !flGoodStart;
-					if (flGoodStart) {
-						openEssayFile (function () {
-							showHideEditor ();
-							viewPublishedUrl ();
-							appPrefs.ctStartups++;
-							prefsChanged ();
-							applyPrefs ();
-							twGetTwitterConfig (function () { //twStorageData.twitterConfig will have information from twitter.com
-								twGetUserInfo (twGetScreenName (), function (userData) {
-									if (appPrefs.authorName.length == 0) {
-										appPrefs.authorName = userData.name;
-										prefsChanged ();
-										}
-									if (appPrefs.authorWebsite.length == 0) {
-										appPrefs.authorWebsite = userData.url;
-										prefsChanged ();
-										twDerefUrl (appPrefs.authorWebsite, function (longUrl) { //try to unshorten the URL
-											appPrefs.authorWebsite = longUrl;
+	readConfigJson (flSkipConfigRead, function () {
+		if (twIsTwitterConnected ()) {
+			twUserWhitelisted (twGetScreenName (), function (flwhitelisted) {
+				if (flwhitelisted) {
+					twStorageStartup (appPrefs, function (flGoodStart) {
+						flStartupFail = !flGoodStart;
+						if (flGoodStart) {
+							openEssayFile (function () {
+								showHideEditor ();
+								viewPublishedUrl ();
+								appPrefs.ctStartups++;
+								prefsChanged ();
+								applyPrefs ();
+								twGetTwitterConfig (function () { //twStorageData.twitterConfig will have information from twitter.com
+									twGetUserInfo (twGetScreenName (), function (userData) {
+										if (appPrefs.authorName.length == 0) {
+											appPrefs.authorName = userData.name;
 											prefsChanged ();
-											});
-										}
-									twitterToPrefs (userData); //fill in RSS prefs with info we got from Twitter
-									console.log ("startup: user info == " + jsonStringify (userData));
+											}
+										if (appPrefs.authorWebsite.length == 0) {
+											appPrefs.authorWebsite = userData.url;
+											prefsChanged ();
+											twDerefUrl (appPrefs.authorWebsite, function (longUrl) { //try to unshorten the URL
+												appPrefs.authorWebsite = longUrl;
+												prefsChanged ();
+												});
+											}
+										twitterToPrefs (userData); //fill in RSS prefs with info we got from Twitter
+										console.log ("startup: user info == " + jsonStringify (userData));
+										});
+									self.setInterval (everySecond, 1000); 
 									});
-								self.setInterval (everySecond, 1000); 
 								});
-							});
-						}
-					});
-				}
-			else {
-				alertDialog ("Can't access the editor because \"" + twGetScreenName () + "\" is not whitelisted.");
-				}
-			});
-		}
-	else {
-		showHideEditor ();
-		}
+							}
+						});
+					}
+				else {
+					alertDialog ("Can't access the editor because \"" + twGetScreenName () + "\" is not whitelisted.");
+					}
+				});
+			}
+		else {
+			showHideEditor ();
+			}
+		});
 	}
