@@ -4,7 +4,7 @@ var appConsts = {
 	"description": "A simple way to edit myword.io pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //change this to point to your nodeStorage server
 	domain: "myword.io", 
-	version: "0.49"
+	version: "0.50"
 	}
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -285,14 +285,16 @@ function getCommentHtml (whenCreated) {
 		}
 	}
 function publishButtonClick (callback) {
+	//Changes
+		//3/21/15; 5:31:07 PM by DW
+			//There is one specific circumstance where we have to upload twice. If appPrefs.lastPublishedUrl is the empty string, we upload the first time to set the value, then upload again, so that it can be correct in the pagetable. The Facebook metadata needs the canonical URL for the page to be correct. 
 	var now = new Date ();
 	fieldsToData ();
-	readHttpFile (urlTemplateFile, function (s) {
+	function uploadOnce (s, callback) {
 		var username = twGetScreenName ();
 		var filepath = replaceAll (theData.filePath, ".json", ".html");
-		var urlpage = "http://myword.io/users/" + username + filepath;
+		var urlpage = appPrefs.lastPublishedUrl; //"http://myword.io/users/" + username + filepath;
 		var urlimage = theData.img;
-		
 		if (urlimage.length == 0) {
 			if (appPrefs.flUseDefaultImage && (appPrefs.defaultImageUrl.length > 0)) { //user has specified a default image, use it
 				urlimage = appPrefs.defaultImageUrl;
@@ -301,8 +303,6 @@ function publishButtonClick (callback) {
 				urlimage = globalDefaultImageUrl;
 				}
 			}
-		
-		
 		var pagetable = {
 			flFromEditor: true,
 			authorname: theData.authorname,
@@ -326,22 +326,34 @@ function publishButtonClick (callback) {
 		twUploadFile (filepath, s, "text/html", false, function (data) {
 			console.log ("publishButtonClick: pagetable == " + jsonStringify (pagetable));
 			console.log ("publishButtonClick: " + data.url + " (" + secondsSince (now) + " seconds)");
-			
-			appPrefs.lastPublishedUrl = data.url;
-			theData.publishedUrl = data.url;
-			
-			viewPublishedUrl ();
-			prefsChanged ();
-			feedChanged ();
-			
-			saveButtonClick (function () {
-				confirmDialog ("View the published essay?", function () {
-					window.open (data.url);
-					if (callback != undefined) {
-						callback ();
-						}
-					});
+			callback (data);
+			});
+		}
+	function afterUpload (data) {
+		viewPublishedUrl ();
+		prefsChanged ();
+		feedChanged ();
+		saveButtonClick (function () {
+			confirmDialog ("View the published essay?", function () {
+				window.open (data.url);
+				if (callback != undefined) {
+					callback ();
+					}
 				});
+			});
+		}
+	readHttpFile (urlTemplateFile, function (s) {
+		uploadOnce (s, function (data) {
+			if (appPrefs.lastPublishedUrl.length == 0) { //have to upload a second time
+				appPrefs.lastPublishedUrl = data.url;
+				theData.publishedUrl = data.url;
+				uploadOnce (s, function (data) {
+					afterUpload (data);
+					});
+				}
+			else {
+				afterUpload (data);
+				}
 			});
 		});
 	}
