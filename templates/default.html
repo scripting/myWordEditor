@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>[%pagetitle%]</title> 
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="alternate" type="application/rss+xml" href="[%rssfeedurl%]">
+		
+		<script src="http://myword.io/template/scripts.js"></script>
+		
+		<!-- Facebook metadata -->
+			<meta property="og:url" content="[%ogurl%]" />
+			<meta property="og:type" content="website" />
+			<meta property="og:title" content="[%ogtitle%]" />
+			<meta property="og:description" content="[%ogdescription%]" />
+			<meta property="og:image" content="[%ogimage%]" />
+			<meta property="og:site_name" content="myword.io" />
+		<!-- Twitter metadata -->
+			<meta name="twitter:card" content="summary_large_image">
+			<meta name="twitter:site" content="[%twscreenname%]">
+			<meta name="twitter:title" content="[%twtitle%]">
+			<meta name="twitter:description" content="[%twdescription%]">
+			<meta name="twitter:image:src" content="[%twimage%]">
+		
+		</head>
+	<body>
+		<div class="divVersionNumber" id="idVersionNumber">
+			</div>
+		<div class="divMywordPage">
+			<div class="divPageTop" id="idPageTop">
+				<div class="divBackgroundImage" id="idBackgroundImage">
+					</div>
+				<div class="divTextBackground">
+					</div>
+				<div class="divPageTopText" id="idPageTopText">
+					<div class="divPageByline" id="idPageByline">
+						</div>
+					<div class="divPageTitle" id="idPageTitle">
+						</div>
+					<div class="divPageDescription" id="idPageDescription">
+						</div>
+					</div>
+				</div>
+			<div class="divPageBody">
+				<div class="divEssayText" id="idEssayText">
+					</div>
+				[%commenttext%]
+				<div class="divPageFooter" id="idPageFooter">
+					</div>
+				</div>
+			</div>
+		<script>
+			var pagetable = [%pagetableInJson%]; 
+			$(document).ready (function () {
+				startup ();
+				});
+			</script>
+		</body>
+	</html>

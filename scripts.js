@@ -4,7 +4,7 @@ var appConsts = {
 	"description": "A simple way to edit myword.io pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //change this to point to your nodeStorage server
 	domain: "myword.io", 
-	version: "0.48"
+	version: "0.49"
 	}
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -22,8 +22,7 @@ var appPrefs = {
 var flStartupFail = false;
 var flPrefsChanged = false, flFeedChanged = false;
 var whenLastUserAction = new Date ();
-var myTextFilename = "myTextFile.txt";
-var defaultImageUrl = "http://scripting.com/2015/03/06/allmans.png";
+var globalDefaultImageUrl = "http://scripting.com/2015/03/06/allmans.png";
 
 var theData = { //the file being edited now
 	title: "",
@@ -37,7 +36,7 @@ var theData = { //the file being edited now
 	ctSaves: 0,
 	publishedUrl: ""
 	};
-var urlTemplateFile = "http://myword.io/template/template.html";
+var urlTemplateFile = "http://myword.io/editor/templates/default.html";
 var jsontextForLastSave;
 var whenLastUserAction = new Date (), whenLastKeystroke = whenLastUserAction;
 var randomMysteryString, ctCloseAttempts = 0;
@@ -294,9 +293,15 @@ function publishButtonClick (callback) {
 		var urlpage = "http://myword.io/users/" + username + filepath;
 		var urlimage = theData.img;
 		
-		if ((urlimage.length == 0) && appPrefs.flUseDefaultImage && (appPrefs.defaultImageUrl.length > 0)) { //3/8/15 by DW
-			urlimage = appPrefs.defaultImageUrl;
+		if (urlimage.length == 0) {
+			if (appPrefs.flUseDefaultImage && (appPrefs.defaultImageUrl.length > 0)) { //user has specified a default image, use it
+				urlimage = appPrefs.defaultImageUrl;
+				}
+			else {
+				urlimage = globalDefaultImageUrl;
+				}
 			}
+		
 		
 		var pagetable = {
 			flFromEditor: true,
@@ -472,26 +477,29 @@ function tellOtherInstancesToQuit () {
 	}
 function startup () {
 	var flSkipConfigRead = false;
-	function readConfigJson (flSkipConfigRead, callback) { //3/20/15 by DW
-		if (flSkipConfigRead) {
-			console.log ("readConfigJson: not reading config since localStorage value has been set.");
-			callback ();
-			}
-		else {
-			readHttpFile (fnameconfig, function (s) {
-				if (s !== undefined) { //the file exists and was read correctly
+	function readConfigJson (flSkipServerSet, callback) { //3/20/15 by DW
+		readHttpFile (fnameconfig, function (s) {
+			if (s !== undefined) { //the file exists and was read correctly
+				try {
 					var jstruct = JSON.parse (s);
-					if (jstruct.urlTwitterServer !== undefined) {
-						twStorageData.urlTwitterServer = jstruct.urlTwitterServer;
-						console.log ("readConfigJson: twStorageData.urlTwitterServer == " + twStorageData.urlTwitterServer);
+					console.log ("readConfigJson: " + fnameconfig + " contains " + jsonStringify (jstruct));
+					if (!flSkipServerSet) {
+						if (jstruct.urlTwitterServer !== undefined) {
+							twStorageData.urlTwitterServer = jstruct.urlTwitterServer;
+							console.log ("readConfigJson: twStorageData.urlTwitterServer == " + twStorageData.urlTwitterServer);
+							}
 						}
-					else {
-						console.log ("readConfigJson: " + fnameconfig + " contains " + jsonStringify (jstruct));
+					if (jstruct.urlDefaultImage != undefined) { //3/21/15 by DW
+						globalDefaultImageUrl = jstruct.urlDefaultImage;
+						console.log ("readConfigJson: globalDefaultImageUrl == " + globalDefaultImageUrl);
 						}
 					}
-				callback ();
-				});
-			}
+				catch (err) {
+					console.log ("readConfigJson: err == " + err);
+					}
+				}
+			callback ();
+			});
 		}
 	console.log ("startup");
 	$("#idTwitterIcon").html (twStorageConsts.fontAwesomeIcon);
@@ -530,13 +538,16 @@ function startup () {
 									twGetUserInfo (twGetScreenName (), function (userData) {
 										if (appPrefs.authorName.length == 0) {
 											appPrefs.authorName = userData.name;
+											theData.authorname = userData.name; //3/21/15 by DW
 											prefsChanged ();
 											}
 										if (appPrefs.authorWebsite.length == 0) {
 											appPrefs.authorWebsite = userData.url;
+											theData.authorwebsite = userData.url; //3/21/15 by DW
 											prefsChanged ();
 											twDerefUrl (appPrefs.authorWebsite, function (longUrl) { //try to unshorten the URL
 												appPrefs.authorWebsite = longUrl;
+												theData.authorwebsite = longUrl; //3/21/15 by DW
 												prefsChanged ();
 												});
 											}
