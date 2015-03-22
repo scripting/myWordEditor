@@ -8,9 +8,9 @@ Here's the <a href="http://myword.io/editor/">demo app</a> for this project, MyW
 
 You can set up your own blogging environment and use it to host your writing and for other people, your friends, colleagues, members of a club, whatever you like.
 
-#### It's radical software
-
 My name is Dave Winer. I blog at <a href="http://scripting.com/">Scripting News</a>. I wrote some of the earliest blogging, RSS and podcasting software. 
+
+#### It's radical software
 
 These days blogging tools try to lock you into their business model, and lock other developers out. I have the freedom to do what I want, so I decided to take the exact opposite approach. I don't  want to operate a free public blogging tool and lock users in and make them dependent on me. Instead, I want to learn from thinkers and writers and developers. I want to engage with other minds. Making money, at this stage of my career, is not so interesting to me. I'd much rather make ideas, and new working relationships, and friends. 
 
