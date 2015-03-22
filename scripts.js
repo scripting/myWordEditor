@@ -65,25 +65,6 @@ var fnameconfig = "config.json"; //3/20/15 by DW
 
 
 
-function testGetUserFiles () {
-	twGetUserFiles (true, function (theData) {
-		
-		for (var i = 0; i < theData.length; i++) {
-			console.log (theData [i].path);
-			}
-		
-		});
-	}
-function patchHistoryForFilePath () { 
-	for (var i = 0; i < appPrefs.rssHistory.length; i++) {
-		var obj = appPrefs.rssHistory [i];
-		var splits = obj.link.split ("/");
-		obj.filepath = "essays/" + splits [splits.length - 1];
-		}
-	prefsChanged ();
-	}
-
-
 function getAllPosts (callback) {
 	var postArray = [];
 	function readOne (ix) {
