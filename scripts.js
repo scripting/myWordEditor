@@ -22,10 +22,10 @@
 var appConsts = {
 	productname: "myWordEditor",
 	productnameForDisplay: "MyWord Editor",
-	"description": "A simple way to edit myword.io pages.",
-	urlTwitterServer: "http://twitter.myword.io/", //change this to point to your nodeStorage server
-	domain: "myword.io", 
-	version: "0.51"
+	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
+	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
+	domain: "myword.io", //the real value is set in startup () 
+	version: "0.52"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -537,6 +537,7 @@ function startup () {
 	console.log ("startup");
 	$("#idTwitterIcon").html (twStorageConsts.fontAwesomeIcon);
 	$("#idVersionNumber").html ("v" + appConsts.version);
+	appConsts.domain = stringNthField (window.location.href, "/", 3); //3/22/15 by DW
 	$("#idEditor").keyup (function () {
 		whenLastUserAction = new Date ();
 		whenLastKeystroke = whenLastUserAction;
