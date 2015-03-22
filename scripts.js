@@ -4,8 +4,8 @@ var appConsts = {
 	"description": "A simple way to edit myword.io pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //change this to point to your nodeStorage server
 	domain: "myword.io", 
-	version: "0.50"
-	}
+	version: "0.51"
+	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
 	ctStartups: 0, minSecsBetwAutoSaves: 3,
@@ -290,7 +290,7 @@ function publishButtonClick (callback) {
 			//There is one specific circumstance where we have to upload twice. If appPrefs.lastPublishedUrl is the empty string, we upload the first time to set the value, then upload again, so that it can be correct in the pagetable. The Facebook metadata needs the canonical URL for the page to be correct. 
 	var now = new Date ();
 	fieldsToData ();
-	function uploadOnce (s, callback) {
+	function uploadOnce (templatetext, callback) {
 		var username = twGetScreenName ();
 		var filepath = replaceAll (theData.filePath, ".json", ".html");
 		var urlpage = appPrefs.lastPublishedUrl; //"http://myword.io/users/" + username + filepath;
@@ -322,8 +322,8 @@ function publishButtonClick (callback) {
 			};
 		pagetable.pagetableinjson = jsonStringify (pagetable);
 		pagetable.commenttext = getCommentHtml (theData.when);
-		s = multipleReplaceAll (s, pagetable, false, "[%", "%]");
-		twUploadFile (filepath, s, "text/html", false, function (data) {
+		var renderedtext = multipleReplaceAll (templatetext, pagetable, false, "[%", "%]");
+		twUploadFile (filepath, renderedtext, "text/html", false, function (data) {
 			console.log ("publishButtonClick: pagetable == " + jsonStringify (pagetable));
 			console.log ("publishButtonClick: " + data.url + " (" + secondsSince (now) + " seconds)");
 			callback (data);
@@ -342,12 +342,12 @@ function publishButtonClick (callback) {
 				});
 			});
 		}
-	readHttpFile (urlTemplateFile, function (s) {
-		uploadOnce (s, function (data) {
+	readHttpFile (urlTemplateFile, function (templatetext) {
+		uploadOnce (templatetext, function (data) {
 			if (appPrefs.lastPublishedUrl.length == 0) { //have to upload a second time
 				appPrefs.lastPublishedUrl = data.url;
 				theData.publishedUrl = data.url;
-				uploadOnce (s, function (data) {
+				uploadOnce (templatetext, function (data) {
 					afterUpload (data);
 					});
 				}
