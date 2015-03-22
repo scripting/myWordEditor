@@ -28,3 +28,7 @@ You can also change the default image for your users' blog posts, or you can lea
 
 Test the installation by logging on. Follow the <a href="http://myword.smallpict.com/2015/03/06/welcomeToMywordEditor.html">instructions</a> on the MyWord Editor blog.
 
+#### Where's the beautiful editor?
+
+I did a survey of the open source JavaScript editors. They are amazing. I decided that rather than pick a winner, I'd ship a pre-HTML5 &lt;textarea>-based editor, and let's see if anyone wants to take on creating a beautiful integration of the two ideas. Here's a <a href="http://scripting.com/2015/03/20/beautifulJavascriptEditors.html">blog post</a> that explains my thinking, and offers some possible next steps.
+
