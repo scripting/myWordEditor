@@ -4,6 +4,8 @@ A simple silo-free blogging tool that creates beautiful essay pages.
 
 Here's an <a href="http://myword.io/users/davewiner/essays/016.html">example</a> of the kind of page you can create with MyWord Editor.
 
+And the <a href="http://scripting.com/2015/03/23/mywordEditorIsOpenSource.html">blog post</a> announcing the release of MyWord Editor in open source.
+
 #### Demo app
 
 Here's the <a href="http://myword.io/editor/">demo app</a> for this project, MyWord Editor.
@@ -20,7 +22,7 @@ So MyWord Editor is radically <a href="http://scripting.com/2015/03/19/mywordEdi
 
 #### How to clone this
 
-This app runs on the user's computer, in a browser. It's a JavaScript app. It communicates via a simple API, with a <a href="https://github.com/scripting/nodeStorage">nodeStorage</a> server, that uses Twitter for identity and Amazon S3 for storage. That server, like the app, is open source. The first part of creating your own blogging system is to set up a nodeStorage server. 
+This app runs on the user's computer, in a browser. It's a JavaScript app. It communicates via a simple <a href="http://api.nodestorage.io/api.js">API</a>, with a <a href="https://github.com/scripting/nodeStorage">nodeStorage</a> server, that uses Twitter for identity and Amazon S3 for storage. That server, like the app, is open source. The first part of creating your own blogging system is to set up a nodeStorage server. 
 
 Once you've done that, download the contents of the myWordEditor repository, and put it in a folder that's publicly accessible over the web. I like using S3 buckets, but you could put it in a folder on an Apache or nginx server. 
 
