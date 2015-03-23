@@ -34,3 +34,11 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 I did a survey of the open source JavaScript editors. They are amazing. I decided that rather than pick a winner, I'd ship a pre-HTML5 &lt;textarea>-based editor, and let's see if anyone wants to take on creating a beautiful integration of the two ideas. Here's a <a href="http://scripting.com/2015/03/20/beautifulJavascriptEditors.html">blog post</a> that explains my thinking, and offers some possible next steps.
 
+#### Support
+
+If you're a developer, or running a server, please ask questions on the <a href="https://groups.google.com/forum/?fromgroups#!forum/server-snacks">server-snacks</a> mail list.
+
+If you're a blogger, and need help writing with MWE, please join the <a href="https://groups.google.com/forum/?fromgroups#!forum/myword-editor">myword-editor</a> mail list.
+
+In either case, please read the docs and scratch your head at least a little before <a href="http://scripting.com/2014/03/19/howToAskForHelpWithSoftware.html">asking for help</a>. 
+
