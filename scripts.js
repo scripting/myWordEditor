@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.53"
+	version: "0.54"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -116,6 +116,31 @@ function fileOpenDialog () {
 		htmltext += "</ul></div>";
 		$("#idFileOpenDialog").modal ("show"); 
 		$("#idWhereToDisplayFileList").html (htmltext);
+		});
+	}
+function publishAllPosts () { //3/24/15 by DW
+	confirmDialog ("Publish all posts?", function () {
+		var savedFilePath = appPrefs.lastFilePath;
+		function publishOne (ix, callback) {
+			if (ix > 0) {
+				appPrefs.lastFilePath = "essays/" + padWithZeros (ix, 3) + ".json";
+				openEssayFile (function () {
+					console.log ("publishAllPosts: publishing " + appPrefs.lastFilePath);
+					publishButtonClick (false, function () {
+						publishOne (ix - 1, callback);
+						});
+					});
+				}
+			else {
+				if (callback !== undefined) {
+					callback ();
+					}
+				}
+			}
+		publishOne (appPrefs.fileSerialnum, function () {
+			appPrefs.lastFilePath = savedFilePath;
+			openEssayFile ();
+			});
 		});
 	}
 function fieldsToHistory () { //copy from theData into the current history array element
@@ -289,11 +314,16 @@ function getCommentHtml (whenCreated) {
 		return ("");
 		}
 	}
-function publishButtonClick (callback) {
+function publishButtonClick (flInteract, callback) {
 	//Changes
+		//3/24/15; 6:53:47 PM by DW
+			//New optional param, flInteract. If false, we don't put up a dialog asking if the user wants to see the rendered file. 
 		//3/21/15; 5:31:07 PM by DW
 			//There is one specific circumstance where we have to upload twice. If appPrefs.lastPublishedUrl is the empty string, we upload the first time to set the value, then upload again, so that it can be correct in the pagetable. The Facebook metadata needs the canonical URL for the page to be correct. 
 	var now = new Date ();
+	if (flInteract === undefined) {
+		flInteract = true;
+		}
 	fieldsToData ();
 	function uploadOnce (templatetext, callback) {
 		var username = twGetScreenName ();
@@ -342,12 +372,19 @@ function publishButtonClick (callback) {
 		prefsChanged ();
 		feedChanged ();
 		saveButtonClick (function () {
-			confirmDialog ("View the published essay?", function () {
-				window.open (data.url);
+			if (flInteract) {
+				confirmDialog ("View the published essay?", function () {
+					window.open (data.url);
+					if (callback != undefined) {
+						callback ();
+						}
+					});
+				}
+			else {
 				if (callback != undefined) {
 					callback ();
 					}
-				});
+				}
 			});
 		}
 	readHttpFile (urlTemplateFile, function (templatetext) {
