@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.52"
+	version: "0.53"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -55,7 +55,8 @@ var theData = { //the file being edited now
 	subs: [],
 	whenLastSave: new Date (0),
 	ctSaves: 0,
-	publishedUrl: ""
+	publishedUrl: "",
+	linkJson: "" //3/24/15 by DW
 	};
 var urlTemplateFile = "http://myword.io/editor/templates/default.html";
 var jsontextForLastSave;
@@ -137,6 +138,7 @@ function fieldsToHistory () { //copy from theData into the current history array
 			obj.twitterScreenName = twGetScreenName ();
 			obj.when = theData.when;
 			obj.filepath = theData.filePath;
+			obj.linkJson = theData.linkJson;
 			break;
 			}
 		}
@@ -217,6 +219,7 @@ function newFileData () { //set fields of theData to represent a new file
 	theData.ctSaves = 0;
 	theData.filePath = "essays/" + padWithZeros (++appPrefs.fileSerialnum, 3) + ".json";
 	theData.publishedUrl = "";
+	theData.linkJson = ""; //3/24/15 by DW
 	
 	addToHistory ();
 	
@@ -325,10 +328,13 @@ function publishButtonClick (callback) {
 		pagetable.pagetableinjson = jsonStringify (pagetable);
 		pagetable.commenttext = getCommentHtml (theData.when);
 		var renderedtext = multipleReplaceAll (templatetext, pagetable, false, "[%", "%]");
-		twUploadFile (filepath, renderedtext, "text/html", false, function (data) {
-			console.log ("publishButtonClick: pagetable == " + jsonStringify (pagetable));
-			console.log ("publishButtonClick: " + data.url + " (" + secondsSince (now) + " seconds)");
-			callback (data);
+		twUploadFile (theData.filePath, pagetable.pagetableinjson, "application/json", false, function (data) {
+			theData.linkJson = data.url;
+			twUploadFile (filepath, renderedtext, "text/html", false, function (data) {
+				console.log ("publishButtonClick: pagetable == " + jsonStringify (pagetable));
+				console.log ("publishButtonClick: " + data.url + " (" + secondsSince (now) + " seconds)");
+				callback (data);
+				});
 			});
 		}
 	function afterUpload (data) {
