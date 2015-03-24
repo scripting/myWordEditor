@@ -36,6 +36,10 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 I did a survey of the open source JavaScript editors. They are amazing. I decided that rather than pick a winner, I'd ship a pre-HTML5 &lt;textarea>-based editor, and let's see if anyone wants to take on creating a beautiful integration of the two ideas. Here's a <a href="http://scripting.com/2015/03/20/beautifulJavascriptEditors.html">blog post</a> that explains my thinking, and offers some possible next steps.
 
+#### v0.53 -- 3/24/15 by DW
+
+In addition to generating an HTML file for each essay, we also generate a JSON file. <a href="http://myword.io/users/davewiner/essays/017.json">Example</a>. I think this will be generally useful, I want to use it immediately to try to create a home page essay browser, using snap.js. There's a corresponding <a href="https://github.com/scripting/myWordEditor/blob/master/lib/buildrss.js#L146">element</a> in the RSS feed, called &lt;source:linkJson>. 
+
 #### Support
 
 If you're a developer, or running a server, please ask questions on the <a href="https://groups.google.com/forum/?fromgroups#!forum/server-snacks">server-snacks</a> mail list.
