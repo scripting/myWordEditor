@@ -619,7 +619,7 @@ function startup () {
 						});
 					}
 				else {
-					alertDialog ("Can't access the editor because \"" + twGetScreenName () + "\" is not whitelisted.");
+					alertDialog ("Can't open the editor because there was an error connecting to the server, " + twStorageData.urlTwitterServer + ", or the user \"" + twGetScreenName () + "\" is not whitelisted.");
 					}
 				});
 			}
