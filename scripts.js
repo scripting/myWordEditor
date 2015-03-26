@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.55"
+	version: "0.56"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -555,6 +555,13 @@ function startup () {
 						globalDefaultImageUrl = jstruct.urlDefaultImage;
 						console.log ("readConfigJson: globalDefaultImageUrl == " + globalDefaultImageUrl);
 						}
+					if (jstruct.googleAnalyticsAccount !== undefined) { //3/26/15 by DW
+						appConsts.googleAnalyticsAccount = jstruct.googleAnalyticsAccount;
+						appConsts.domain = stringNthField (window.location.href, "/", 3); //3/22/15 by DW
+						console.log ("readConfigJson: appConsts.domain == " + appConsts.domain);
+						console.log ("readConfigJson: appConsts.googleAnalyticsAccount == " + appConsts.googleAnalyticsAccount);
+						initGoogleAnalytics (); 
+						}
 					}
 				catch (err) {
 					console.log ("readConfigJson: err == " + err);
@@ -566,14 +573,12 @@ function startup () {
 	console.log ("startup");
 	$("#idTwitterIcon").html (twStorageConsts.fontAwesomeIcon);
 	$("#idVersionNumber").html ("v" + appConsts.version);
-	appConsts.domain = stringNthField (window.location.href, "/", 3); //3/22/15 by DW
 	$("#idEditor").keyup (function () {
 		whenLastUserAction = new Date ();
 		whenLastKeystroke = whenLastUserAction;
 		});
 	initMenus ();
 	hitCounter (); 
-	initGoogleAnalytics (); 
 	tellOtherInstancesToQuit ();
 	twGetOauthParams (); //redirects if OAuth params are present
 	//determine the URL of the nodeStorage server -- 3/19/15 by DW

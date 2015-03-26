@@ -1,4 +1,5 @@
 {
 	"urlTwitterServer": "http://twitter.myword.io/",
-	"urlDefaultImage": "http://scripting.com/2015/03/21/gratefulDead.png"
+	"urlDefaultImage": "http://scripting.com/2015/03/21/gratefulDead.png",
+	"googleAnalyticsAccount": "UA-39531990-1"
 	}
