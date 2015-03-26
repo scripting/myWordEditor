@@ -23,30 +23,46 @@
 		
 		</head>
 	<body>
-		<div class="divVersionNumber" id="idVersionNumber">
+		<div class="snap-drawers">
+			<div class="snap-drawer snap-drawer-left" id="idSnapDrawerDiv">
+				<div class="divLeftDrawer">
+					<div class="divLinksToPosts" id="idLinksToPosts">
+						</div>
+					</div>
+				</div>
+			<div class="snap-drawer snap-drawer-right"></div>
 			</div>
-		<div class="divMywordPage">
-			<div class="divPageTop" id="idPageTop">
-				<div class="divBackgroundImage" id="idBackgroundImage">
-					</div>
-				<div class="divTextBackground">
-					</div>
-				<div class="divPageTopText" id="idPageTopText">
-					<div class="divPageByline" id="idPageByline">
+		<div id="idSnapContent" class="snap-content">
+			<div class="divVersionNumber" id="idVersionNumber">
+				</div>
+			<div class="divMywordPage">
+				<div class="divPageTop" id="idPageTop">
+					<div class="divBackgroundImage" id="idBackgroundImage">
 						</div>
-					<div class="divPageTitle" id="idPageTitle">
+					<div class="divTextBackground">
 						</div>
-					<div class="divPageDescription" id="idPageDescription">
+					<div class="divPageTopText" id="idPageTopText">
+						<div class="divPageByline" id="idPageByline">
+							</div>
+						<div class="divPageTitle" id="idPageTitle">
+							[%ogtitle%]
+							</div>
+						<div class="divPageDescription" id="idPageDescription">
+							[%ogdescription%]
+							</div>
+						</div>
+					</div>
+				<div class="divPageBody">
+					<div class="divEssayText" id="idEssayText">
+						[%renderedtext%]
+						</div>
+					[%commenttext%]
+					<div class="divPageFooter" id="idPageFooter">
 						</div>
 					</div>
 				</div>
-			<div class="divPageBody">
-				<div class="divEssayText" id="idEssayText">
-					</div>
-				[%commenttext%]
-				<div class="divPageFooter" id="idPageFooter">
-					</div>
-				</div>
+			
+			
 			</div>
 		<script>
 			var pagetable = [%pagetableInJson%]; 
@@ -54,5 +70,8 @@
 				startup ();
 				});
 			</script>
+		
+		
+		
 		</body>
 	</html>

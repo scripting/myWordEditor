@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.54"
+	version: "0.55"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -145,9 +145,12 @@ function publishAllPosts () { //3/24/15 by DW
 	}
 function fieldsToHistory () { //copy from theData into the current history array element
 	function getBodyText () {
+		//Changes
+			//3/26/15; 12:37:43 PM by DW
+				//We're now passing the text through a markdown processor as the feed is built, so we need to use markdown conventions for paragraphs.
 		var s = "";
 		for (var i = 0; i < theData.subs.length; i++) {
-			s += "<p>" + theData.subs [i] + "</p>";
+			s += theData.subs [i] + "\n\n";
 			}
 		return (s);
 		}
@@ -164,6 +167,7 @@ function fieldsToHistory () { //copy from theData into the current history array
 			obj.when = theData.when;
 			obj.filepath = theData.filePath;
 			obj.linkJson = theData.linkJson;
+			obj.flMarkdown = true; //3/26/15 by DW
 			break;
 			}
 		}
@@ -357,6 +361,7 @@ function publishButtonClick (flInteract, callback) {
 			};
 		pagetable.pagetableinjson = jsonStringify (pagetable);
 		pagetable.commenttext = getCommentHtml (theData.when);
+		pagetable.renderedtext = new Markdown.Converter ().makeHtml (pagetable.body); //for substitution in the template -- 3/26/15 by DW
 		var renderedtext = multipleReplaceAll (templatetext, pagetable, false, "[%", "%]");
 		twUploadFile (theData.filePath, pagetable.pagetableinjson, "application/json", false, function (data) {
 			theData.linkJson = data.url;
