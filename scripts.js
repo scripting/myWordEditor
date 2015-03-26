@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.56"
+	version: "0.57"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -58,7 +58,7 @@ var theData = { //the file being edited now
 	publishedUrl: "",
 	linkJson: "" //3/24/15 by DW
 	};
-var urlTemplateFile = "http://myword.io/editor/templates/default.html";
+var urlTemplateFile = "templates/default.html";
 var jsontextForLastSave;
 var whenLastUserAction = new Date (), whenLastKeystroke = whenLastUserAction;
 var randomMysteryString, ctCloseAttempts = 0;
@@ -183,6 +183,7 @@ function addToHistory () {
 	fieldsToHistory ();
 	}
 function myWordBuildRssFeed () {
+	var now = new Date ();
 	var headElements = {
 		title: appPrefs.rssTitle,
 		link: appPrefs.rssLink,
@@ -196,7 +197,7 @@ function myWordBuildRssFeed () {
 		}
 	var xmltext = buildRssFeed (headElements, appPrefs.rssHistory);
 	twUploadFile ("rss.xml", xmltext, "text/xml", false, function (data) {
-		console.log ("buildRssFeed: url == " + data.url);
+		console.log ("myWordBuildRssFeed: " + data.url + " (" + secondsSince (now) + " seconds)");
 		if (appPrefs.rssFeedUrl != data.url) {
 			appPrefs.rssFeedUrl = data.url;
 			prefsChanged ();
@@ -366,7 +367,6 @@ function publishButtonClick (flInteract, callback) {
 		twUploadFile (theData.filePath, pagetable.pagetableinjson, "application/json", false, function (data) {
 			theData.linkJson = data.url;
 			twUploadFile (filepath, renderedtext, "text/html", false, function (data) {
-				console.log ("publishButtonClick: pagetable == " + jsonStringify (pagetable));
 				console.log ("publishButtonClick: " + data.url + " (" + secondsSince (now) + " seconds)");
 				callback (data);
 				});
@@ -425,7 +425,7 @@ function openEssayFile (callback) {
 					$("#idTitle").val (theData.title);
 					$("#idDescription").val (theData.description);
 					$("#idImageUrl").val (theData.img);
-					console.log ("openEssayFile: data == " + data.filedata);
+					console.log ("openEssayFile: " + data.filedata.length + " chars.");
 					}
 				catch (err) {
 					newFileData ();
@@ -620,7 +620,6 @@ function startup () {
 												});
 											}
 										twitterToPrefs (userData); //fill in RSS prefs with info we got from Twitter
-										console.log ("startup: user info == " + jsonStringify (userData));
 										});
 									self.setInterval (everySecond, 1000); 
 									});

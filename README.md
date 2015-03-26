@@ -36,9 +36,13 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 I did a survey of the open source JavaScript editors. They are amazing. I decided that rather than pick a winner, I'd ship a pre-HTML5 &lt;textarea>-based editor, and let's see if anyone wants to take on creating a beautiful integration of the two ideas. Here's a <a href="http://scripting.com/2015/03/20/beautifulJavascriptEditors.html">blog post</a> that explains my thinking, and offers some possible next steps.
 
+#### v0.57 -- 3/26/15 by DW
+
+There were lots of debugging calls to console.log that displayed huge data structures. I quieted them down, so we get simpler readouts from the console, now that this code isn't so new. Changed the <i>urlTemplateFile</i> constant to be a relative URL, relative to the folder MWE is running from. That way I can change the template on my server without changing it on everyone's. Still more of this kind of factoring to do. Must move carefully (slowly).
+
 #### v0.56 -- 3/26/15 by DW
 
-New supported value in config.json -- googleAnalyticsAccount. If specified, we use it in ga.js to make calls to Google Analytics. 
+New supported value in config.json -- googleAnalyticsAccount. If specified, we use it in <a href="https://github.com/scripting/myWordEditor/blob/master/lib/ga.js">ga.js</a> to make calls to Google Analytics. 
 
 #### v0.55 -- 3/26/15 by DW
 
