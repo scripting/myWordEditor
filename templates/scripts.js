@@ -46,7 +46,7 @@ document.write ("<script src='http://fargo.io/code/shared/xml.js'></script>");
 document.write ("<script src='http://fargo.io/cms/snap/snap.js'></script>");
 document.write ("<link rel='stylesheet' type='text/css' href='http://fargo.io/cms/snap/snap.css' />");
 
-document.write ('<link href="http://myword.io/template/styles.css" rel="stylesheet" type="text/css">');
+document.write ('<link href="http://myword.io/templates/styles.css" rel="stylesheet" type="text/css">');
 
 function viewPagetable () {
 	console.log (jsonStringify (pagetable));
