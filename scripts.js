@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.58"
+	version: "0.59"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",

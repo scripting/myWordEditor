@@ -36,6 +36,10 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 I did a survey of the open source JavaScript editors. They are amazing. I decided that rather than pick a winner, I'd ship a pre-HTML5 &lt;textarea>-based editor, and let's see if anyone wants to take on creating a beautiful integration of the two ideas. Here's a <a href="http://scripting.com/2015/03/20/beautifulJavascriptEditors.html">blog post</a> that explains my thinking, and offers some possible next steps.
 
+#### v0.59 -- 3/27/15 by DW
+
+First source release of the JavaScript code and CSS styles used in the rendered pages. Explained in this <a href="http://myword.smallpict.com/2015/03/27/mywordEditorV059.html">blog post</a>. 
+
 #### v0.58 -- 3/27/15 by DW
 
 The *Open file* command in the Editor menu is replaced by a new History menu. Explained in this <a href="http://myword.smallpict.com/2015/03/27/theHistoryMenu.html">blog post</a>.
