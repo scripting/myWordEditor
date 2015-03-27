@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.57"
+	version: "0.58"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -41,7 +41,7 @@ var appPrefs = {
 	lastPublishedUrl: ""
 	};
 var flStartupFail = false;
-var flPrefsChanged = false, flFeedChanged = false;
+var flPrefsChanged = false, flFeedChanged = false, flHistoryChanged = false;
 var whenLastUserAction = new Date ();
 var globalDefaultImageUrl = "http://scripting.com/2015/03/06/allmans.png";
 
@@ -65,7 +65,17 @@ var randomMysteryString, ctCloseAttempts = 0;
 var fnameconfig = "config.json"; //3/20/15 by DW
 
 
-
+function patchPrefs () {
+	console.log ("patchPrefs");
+	//3/27/15 by DW -- some early files in rssHistory have incorrect filepath fields
+		for (var i = 0; i < appPrefs.rssHistory.length; i++) {
+			var obj = appPrefs.rssHistory [i];
+			if (endsWith (obj.filepath, ".html")) {
+				obj.filepath = stringMid (obj.filepath, 1, obj.filepath.length - 5) + ".json";
+				prefsChanged ();
+				}
+			}
+	}
 function getAllPosts (callback) {
 	var postArray = [];
 	function readOne (ix) {
@@ -99,6 +109,7 @@ function closeFileOpenDialog () {
 	$("#idFileOpenDialog").modal ("hide"); 
 	}
 function openThisFile (id) {
+	console.log ("openThisFile: id == " + id);
 	appPrefs.lastFilePath = id;
 	openEssayFile (function () {
 		prefsChanged ();
@@ -168,6 +179,7 @@ function fieldsToHistory () { //copy from theData into the current history array
 			obj.filepath = theData.filePath;
 			obj.linkJson = theData.linkJson;
 			obj.flMarkdown = true; //3/26/15 by DW
+			historyChanged (); //3/27/15 by DW
 			break;
 			}
 		}
@@ -181,6 +193,28 @@ function addToHistory () {
 	obj.guid = new Object ();
 	obj.filepath = theData.filePath; //otherwise fieldsToHistory won't find it! oy
 	fieldsToHistory ();
+	}
+function buildHistoryMenu () { //3/27/15 by DW
+	var maxCharsHistoryMenuItem = 25;
+	$("#idHistoryMenuList").empty ();
+	for (var i = 0; i < appPrefs.rssHistory.length; i++) {
+		var obj = appPrefs.rssHistory [i];
+		var liMenuItem = $("<li></li>");
+		var menuItemNameLink = $("<a></a>");
+		
+		//set text of menu item
+			var itemtext = obj.title;
+			itemtext = maxLengthString (itemtext, maxCharsHistoryMenuItem);
+			if (itemtext.length === 0) {
+				itemtext = "&nbsp;";
+				}
+			menuItemNameLink.html (itemtext);
+		
+		menuItemNameLink.attr ("onclick", "openThisFile ('" + obj.filepath + "')");
+		menuItemNameLink.attr ("target", "_blank");
+		liMenuItem.append (menuItemNameLink);
+		$("#idHistoryMenuList").append (liMenuItem);
+		}
 	}
 function myWordBuildRssFeed () {
 	var now = new Date ();
@@ -466,6 +500,9 @@ function showHideEditor () {
 function prefsChanged () {
 	flPrefsChanged = true;
 	}
+function historyChanged () {
+	flHistoryChanged = true;
+	}
 function feedChanged () {
 	flFeedChanged = true;
 	}
@@ -517,6 +554,10 @@ function everySecond () {
 	if (flPrefsChanged) {
 		twPrefsToStorage (appPrefs);
 		flPrefsChanged = false;
+		}
+	if (flHistoryChanged) { //3/27/15 by DW
+		buildHistoryMenu ();
+		flHistoryChanged = false;
 		}
 	if (flFeedChanged) {
 		myWordBuildRssFeed ();
@@ -595,10 +636,12 @@ function startup () {
 				if (flwhitelisted) {
 					twStorageStartup (appPrefs, function (flGoodStart) {
 						flStartupFail = !flGoodStart;
+						patchPrefs (); //3/27/15 by DW
 						if (flGoodStart) {
 							openEssayFile (function () {
 								showHideEditor ();
 								viewPublishedUrl ();
+								buildHistoryMenu (); //3/27/15 by DW
 								appPrefs.ctStartups++;
 								prefsChanged ();
 								applyPrefs ();
