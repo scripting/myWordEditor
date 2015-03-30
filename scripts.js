@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.59"
+	version: "0.60"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -35,6 +35,7 @@ var appPrefs = {
 	flRssPrefsInitialized: false, rssTitle: "", rssDescription: "", rssLink: "", rssMaxItemsInFeed: 25, rssLanguage: "en-us", 
 	rssHistory: [], rssFeedUrl: "",
 	flUseDefaultImage: false, defaultImageUrl: "",
+	nameDefaultTemplate: "default", //3/29/15 by DW
 	lastTweetText: "", lastUserName: "davewiner",
 	fileSerialnum: 0,
 	lastFilePath: "",
@@ -44,6 +45,7 @@ var flStartupFail = false;
 var flPrefsChanged = false, flFeedChanged = false, flHistoryChanged = false;
 var whenLastUserAction = new Date ();
 var globalDefaultImageUrl = "http://scripting.com/2015/03/06/allmans.png";
+var config; //3/28/15 by DW
 
 var theData = { //the file being edited now
 	title: "",
@@ -56,7 +58,8 @@ var theData = { //the file being edited now
 	whenLastSave: new Date (0),
 	ctSaves: 0,
 	publishedUrl: "",
-	linkJson: "" //3/24/15 by DW
+	linkJson: "", //3/24/15 by DW
+	nameTemplate: appPrefs.nameDefaultTemplate //3/28/15 by DW
 	};
 var urlTemplateFile = "templates/default.html";
 var jsontextForLastSave;
@@ -272,6 +275,7 @@ function newFileData () { //set fields of theData to represent a new file
 	theData.body = "";
 	theData.title = "";
 	theData.description = "";
+	theData.nameTemplate = appPrefs.nameDefaultTemplate; //3/28/15 by DW
 	theData.subs = [];
 	
 	theData.authorname = appPrefs.authorName;
@@ -305,6 +309,7 @@ function dataToFields () {
 		}
 	$("#idTitle").val (theData.title);
 	$("#idDescription").val (theData.description);
+	$("#idTemplateSelect").val (theData.nameTemplate); //3/28/15 by DW
 	$("#idImageUrl").val (theData.img);
 	$("#idTextArea").val (getBodyText ());
 	}
@@ -312,6 +317,7 @@ function fieldsToData () {
 	theData.body = $("#idTextArea").val ();
 	theData.title = $("#idTitle").val ();
 	theData.description = $("#idDescription").val ();
+	theData.nameTemplate = $("#idTemplateSelect").val (); //3/28/15 by DW
 	theData.img = $("#idImageUrl").val ();
 	theData.subs = $("#idTextArea").val ().split ("\n\n");
 	}
@@ -359,11 +365,27 @@ function publishButtonClick (flInteract, callback) {
 			//New optional param, flInteract. If false, we don't put up a dialog asking if the user wants to see the rendered file. 
 		//3/21/15; 5:31:07 PM by DW
 			//There is one specific circumstance where we have to upload twice. If appPrefs.lastPublishedUrl is the empty string, we upload the first time to set the value, then upload again, so that it can be correct in the pagetable. The Facebook metadata needs the canonical URL for the page to be correct. 
-	var now = new Date ();
+	var now = new Date (), urlTemplate;
 	if (flInteract === undefined) {
 		flInteract = true;
 		}
 	fieldsToData ();
+	//set urlTemplate, unicase search
+		var lowername = stringLower (theData.nameTemplate);
+		for (var x in config.templates) {
+			if (stringLower (x) == lowername) {
+				urlTemplate = config.templates [x];
+				break;
+				}
+			}
+		if (urlTemplate === undefined) { //not found, use the first as default
+			for (var x in config.templates) {
+				urlTemplate = config.templates [x];
+				break;
+				}
+			}
+		
+		
 	function uploadOnce (templatetext, callback) {
 		var username = twGetScreenName ();
 		var filepath = replaceAll (theData.filePath, ".json", ".html");
@@ -392,7 +414,9 @@ function publishButtonClick (flInteract, callback) {
 			twtitle:  theData.title,
 			twdescription:  theData.description,
 			twimage:  urlimage,
-			rssfeedurl: appPrefs.rssFeedUrl
+			rssfeedurl: appPrefs.rssFeedUrl,
+			nametemplate: theData.nameTemplate, //3/28/15 by DW
+			urltemplate: urlTemplate //3/29/15 by DW
 			};
 		pagetable.pagetableinjson = jsonStringify (pagetable);
 		pagetable.commenttext = getCommentHtml (theData.when);
@@ -426,7 +450,8 @@ function publishButtonClick (flInteract, callback) {
 				}
 			});
 		}
-	readHttpFile (urlTemplateFile, function (templatetext) {
+	readHttpFile (urlTemplate, function (templatetext) {
+		console.log ("publishButtonClick: read " + templatetext.length + " chars from " + urlTemplate);
 		uploadOnce (templatetext, function (data) {
 			if (appPrefs.lastPublishedUrl.length == 0) { //have to upload a second time
 				appPrefs.lastPublishedUrl = data.url;
@@ -440,6 +465,15 @@ function publishButtonClick (flInteract, callback) {
 				}
 			});
 		});
+	}
+function buildTemplateMenu () { //3/28/15 by DW
+	$("#idTemplateSelect").empty ();
+	for (x in config.templates) {
+		$("#idTemplateSelect").append ("<option value=\"" + stringLower (x) + "\">" + x + "</option>");
+		}
+	}
+function templateMenuSelect () { //3/28/15 by DW
+	console.log ("templateMenuSelect: you chose == " + $("#idTemplateSelect").val () + " template.");
 	}
 function openEssayFile (callback) {
 	if (appPrefs.lastFilePath.length == 0) { //first run
@@ -455,10 +489,14 @@ function openEssayFile (callback) {
 			if (data != undefined) {
 				try {
 					theData = JSON.parse (data.filedata);
+					if (theData.nameTemplate === undefined) {
+						theData.nameTemplate = appPrefs.nameDefaultTemplate;
+						}
 					$("#idTextArea").val (theData.body);
 					$("#idTitle").val (theData.title);
 					$("#idDescription").val (theData.description);
 					$("#idImageUrl").val (theData.img);
+					$("#idTemplateSelect").val (theData.nameTemplate); //3/28/15 by DW
 					console.log ("openEssayFile: " + data.filedata.length + " chars.");
 					}
 				catch (err) {
@@ -603,6 +641,8 @@ function startup () {
 						console.log ("readConfigJson: appConsts.googleAnalyticsAccount == " + appConsts.googleAnalyticsAccount);
 						initGoogleAnalytics (); 
 						}
+					config = jstruct; //3/28/15 by DW -- keep it as a global
+					buildTemplateMenu (); //3/28/15 by DW
 					}
 				catch (err) {
 					console.log ("readConfigJson: err == " + err);

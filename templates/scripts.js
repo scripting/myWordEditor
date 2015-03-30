@@ -24,7 +24,7 @@ var appConsts = {
 	productnameForDisplay: "MyWord Editor",
 	productLink: "http://myword.io/editor/",
 	domain: "myword.io", 
-	version: "0.51"
+	version: "0.52"
 	}
 var defaultImageUrl = "http://scripting.com/2015/03/06/allmans.png";
 var mySnap, flSnapDrawerOpen = false;
@@ -94,8 +94,12 @@ function readLinksFromRss (url, idBlogPosts, callback) { //3/25/15 by DW
 	}
 function handleHamburgerClick () { //3/25/15 by DW
 	console.log ("handleHamburgerClick: flSnapDrawerOpen == " + flSnapDrawerOpen);
+	console.log ("handleHamburgerClick: window.location.href == " + window.location.href);
 	if (flSnapDrawerOpen) {
 		mySnap.close ("left");
+		if (stringContains (window.location.href, "?tocOpen=true")) { //redirect
+			window.location.href = stringNthField (window.location.href, "?", 1);
+			}
 		flSnapDrawerOpen = false;
 		}
 	else {
@@ -115,8 +119,10 @@ function initSnap (flSnapOpenInitially) { //3/25/15 by DW
 			});
 		}
 	if (flSnapOpenInitially) {
-		mySnap.open ("left");
-		flSnapDrawerOpen = true;
+		if (mySnap !== undefined) {
+			mySnap.open ("left");
+			flSnapDrawerOpen = true;
+			}
 		}
 	if (mySnap !== undefined) {
 		mySnap.settings ({transitionSpeed: 0.3});
@@ -158,11 +164,15 @@ function viewPostFromEditor (pagetable) {
 	//background image
 		var imgurl = trimWhitespace (pagetable.ogimage);
 		if (imgurl.length > 0) {
-			$("#idBackgroundImage").css ("background-image", "url(" + imgurl + ")");
+			if ($("#idBackgroundImage")) {
+				$("#idBackgroundImage").css ("background-image", "url(" + imgurl + ")");
+				}
 			}
 	//title
 		if (pagetable.ogtitle != undefined) {
-			$("#idPageTitle").html (pagetable.ogtitle);
+			if ($("#idPageTitle")) {
+				$("#idPageTitle").html (pagetable.ogtitle);
+				}
 			}
 		if (pagetable.pagetitle != undefined) {
 			document.title = appConsts.productnameForDisplay + ": " + pagetable.pagetitle;
@@ -170,34 +180,42 @@ function viewPostFromEditor (pagetable) {
 		
 	//byline
 		if (pagetable.authorname != undefined) {
-			var author = pagetable.authorname, byline;
-			if (pagetable.authorwebsite != undefined) {
-				author = "<a href=\"" + pagetable.authorwebsite + "\">" + author + "</a>";
-				}
-			byline = "By " + author;
-			if (pagetable.when != undefined) {
-				var whenstring;
-				if (sameDay (new Date (pagetable.when), now)) {
-					whenstring = " at ";
+			if ($("#idPageByline")) {
+				var author = pagetable.authorname, byline;
+				if (pagetable.authorwebsite != undefined) {
+					author = "<a href=\"" + pagetable.authorwebsite + "\">" + author + "</a>";
 					}
-				else {
-					whenstring = " on ";
+				byline = "By " + author;
+				if (pagetable.when != undefined) {
+					var whenstring;
+					if (sameDay (new Date (pagetable.when), now)) {
+						whenstring = " at ";
+						}
+					else {
+						whenstring = " on ";
+						}
+					byline += whenstring + viewDate (pagetable.when);
 					}
-				byline += whenstring + viewDate (pagetable.when);
+				$("#idPageByline").html (byline + ".");
 				}
-			$("#idPageByline").html (byline + ".");
 			}
 	//description
 		if (pagetable.ogdescription != undefined) {
-			$("#idPageDescription").html (pagetable.ogdescription);
+			if ($("#idPageDescription")) {
+				$("#idPageDescription").html (pagetable.ogdescription);
+				}
 			}
 	//essay text
 		if (pagetable.body != undefined) {
-			var essaytext = "<div class=\"divMarkdownText\">" + markdown.makeHtml (emojifyString (pagetable.body)) + "</div>";
-			$("#idEssayText").html (essaytext);
+			if ($("#idEssayText")) {
+				var essaytext = "<div class=\"divMarkdownText\">" + markdown.makeHtml (emojifyString (pagetable.body)) + "</div>";
+				$("#idEssayText").html (essaytext);
+				}
 			}
 	//footer text
-		$("#idPageFooter").html ("<hr><center><p>" + getFooterText (pagetable) + "</p></center>");
+		if ($("#idPageFooter")) {
+			$("#idPageFooter").html ("<div class=\"divFooterText\">" + getFooterText (pagetable) + "</div>");
+			}
 	}
 
 function startup () {
@@ -221,7 +239,6 @@ function startup () {
 	
 	if ((pagetable !== undefined) && (pagetable.flFromEditor)) {
 		viewPostFromEditor (pagetable);
-		
 		self.setInterval (everySecond, 1000); 
 		}
 	else {

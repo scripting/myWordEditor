@@ -32,6 +32,18 @@ body {
 	padding: 2px !important; 
 	height: 32px !important; 
 	}
+.imageUrlItem {
+	width: 75%;
+	}
+.divTemplateMenu {
+	float: right;
+	}
+.divTemplateMenu select {
+	font-family: "Ubuntu";
+	font-size: 18px;
+	width: 150px;
+	height: 32px !important; 
+	}
 .form-horizontal .control-label {
 	width: 170px;
 	}

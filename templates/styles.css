@@ -198,6 +198,11 @@ body {
 	margin-bottom: 10px;
 	}
 
+.divFooterText {
+	border-top: 1px solid silver;
+	text-align: center;
+	}
+
 
 
 @media only screen 
