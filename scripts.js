@@ -45,7 +45,6 @@ var flStartupFail = false;
 var flPrefsChanged = false, flFeedChanged = false, flHistoryChanged = false;
 var whenLastUserAction = new Date ();
 var globalDefaultImageUrl = "http://scripting.com/2015/03/06/allmans.png";
-var config; //3/28/15 by DW
 
 var theData = { //the file being edited now
 	title: "",
@@ -67,6 +66,11 @@ var whenLastUserAction = new Date (), whenLastKeystroke = whenLastUserAction;
 var randomMysteryString, ctCloseAttempts = 0;
 var fnameconfig = "config.json"; //3/20/15 by DW
 
+var config; //3/28/15 by DW
+var defaultTemplates = {
+	"Default": "http://myword.io/templates/default.html",
+	"Plain": "http://myword.io/templates/plain/template.html"
+	};
 
 function patchPrefs () {
 	console.log ("patchPrefs");
@@ -642,6 +646,9 @@ function startup () {
 						initGoogleAnalytics (); 
 						}
 					config = jstruct; //3/28/15 by DW -- keep it as a global
+					if (config.templates === undefined) { //3/30/15 by DW
+						config.templates = defaultTemplates;
+						}
 					buildTemplateMenu (); //3/28/15 by DW
 					}
 				catch (err) {
