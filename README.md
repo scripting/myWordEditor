@@ -38,7 +38,7 @@ I did a survey of the open source JavaScript editors. They are amazing. I decide
 
 #### v0.60 -- 3/30/15 by DW
 
-<a href="http://myword.smallpict.com/2015/03/30/templatesInMyword.html">Templates</a>. 
+This is the first release of MWE with <a href="http://myword.smallpict.com/2015/03/30/templatesInMyword.html">template</a> support. Be sure to read the note about breakage on that page. Any work you do with templates now is likely to break. 
 
 #### v0.59 -- 3/27/15 by DW
 
