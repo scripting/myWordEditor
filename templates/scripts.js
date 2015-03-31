@@ -175,7 +175,14 @@ function viewPostFromEditor (pagetable) {
 				}
 			}
 		if (pagetable.pagetitle != undefined) {
-			document.title = appConsts.productnameForDisplay + ": " + pagetable.pagetitle;
+			var titleprefix;
+			if (pagetable.appPrefs.authorName) {
+				titleprefix = pagetable.appPrefs.authorName;
+				}
+			else {
+				titleprefix = appConsts.productnameForDisplay;
+				}
+			document.title = titleprefix + ": " + pagetable.pagetitle;
 			}
 		
 	//byline

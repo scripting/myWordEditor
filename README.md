@@ -40,6 +40,8 @@ I did a survey of the open source JavaScript editors. They are amazing. I decide
 
 Add scalars from appConsts and appPrefs to the pagetable in the rendered page. This allows scripts running in the page to know the title of the site, the version of MWE that created the page, etc.
 
+In the title of essay pages, we use the author's name if it's available instead of the name of the product. So a story might say "Jordan Jones: What I want for Christmas" instead of "MyWord Editor: What I want for Christmas". 
+
 #### v0.60 -- 3/30/15 by DW
 
 This is the first release of MWE with <a href="http://myword.smallpict.com/2015/03/30/templatesInMyword.html">template</a> support. Be sure to read the note about breakage on that page. Any work you do with templates now is likely to break. 
