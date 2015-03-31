@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.60"
+	version: "0.61"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -403,7 +403,8 @@ function publishButtonClick (flInteract, callback) {
 				urlimage = globalDefaultImageUrl;
 				}
 			}
-		var pagetable = {
+		
+		var pagetable = { //3/30/15 by DW -- add appPrefs and appConsts to the pagetable
 			flFromEditor: true,
 			authorname: theData.authorname,
 			authorwebsite: theData.authorwebsite,
@@ -420,11 +421,16 @@ function publishButtonClick (flInteract, callback) {
 			twimage:  urlimage,
 			rssfeedurl: appPrefs.rssFeedUrl,
 			nametemplate: theData.nameTemplate, //3/28/15 by DW
-			urltemplate: urlTemplate //3/29/15 by DW
+			urltemplate: urlTemplate, //3/29/15 by DW
+			appConsts: new Object (), //3/30/15 by DW
+			appPrefs: new Object () //3/30/15 by DW
 			};
+		copyScalars (appConsts, pagetable.appConsts);
+		copyScalars (appPrefs, pagetable.appPrefs);
 		pagetable.pagetableinjson = jsonStringify (pagetable);
 		pagetable.commenttext = getCommentHtml (theData.when);
 		pagetable.renderedtext = new Markdown.Converter ().makeHtml (pagetable.body); //for substitution in the template -- 3/26/15 by DW
+		
 		var renderedtext = multipleReplaceAll (templatetext, pagetable, false, "[%", "%]");
 		twUploadFile (theData.filePath, pagetable.pagetableinjson, "application/json", false, function (data) {
 			theData.linkJson = data.url;
