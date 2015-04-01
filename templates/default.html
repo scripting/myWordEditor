@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>[%pagetitle%]</title> 
+		<title>[%pagetitle%]</title>  
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="alternate" type="application/rss+xml" href="[%rssfeedurl%]">
@@ -56,13 +56,13 @@
 					<div class="divEssayText" id="idEssayText">
 						[%renderedtext%]
 						</div>
-					[%commenttext%]
+					<div class="divComments">   
+						[%disquscomments%]
+						</div>
 					<div class="divPageFooter" id="idPageFooter">
 						</div>
 					</div>
 				</div>
-			
-			
 			</div>
 		<script>
 			var pagetable = [%pagetableInJson%]; 
@@ -70,8 +70,5 @@
 				startup ();
 				});
 			</script>
-		
-		
-		
 		</body>
 	</html>
