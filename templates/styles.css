@@ -83,7 +83,7 @@ body {
 	font-family: "Lora", "Georgia", Serif;
 	font-size: 22px;
 	line-height: 145%;
-	margin-bottom: 400px;
+	margin-bottom: 30px;
 	}
 .divEssayText p {
 	line-height: 145%;
@@ -118,6 +118,7 @@ body {
 .divPageFooter {
 	font-size: 16px;
 	width: 100%;
+	margin-bottom: 400px;
 	padding-bottom: 3em;
 	}
 .divPageFooter a {
@@ -140,8 +141,10 @@ body {
 	}
 .divComments {
 	border: 1px solid silver;
-	padding: 5px;
+	padding: 8px;
 	background-color: white;
+	margin-top: 30px;
+	margin-bottom: 30px;
 	}
 .emoji {
 	width: 1em;

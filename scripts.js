@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.61"
+	version: "0.62"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -36,6 +36,7 @@ var appPrefs = {
 	rssHistory: [], rssFeedUrl: "",
 	flUseDefaultImage: false, defaultImageUrl: "",
 	nameDefaultTemplate: "default", //3/29/15 by DW
+	flDisqusComments: true, disqusGroupName: "mywordcomments", //3/31/15 by DW
 	lastTweetText: "", lastUserName: "davewiner",
 	fileSerialnum: 0,
 	lastFilePath: "",
@@ -71,6 +72,9 @@ var defaultTemplates = {
 	"Default": "http://myword.io/templates/default.html",
 	"Plain": "http://myword.io/templates/plain/template.html"
 	};
+
+var disqusCode =  //3/31/15 by DW
+	"<div id=\"disqus_thread\"></div>\n<script type=\"text/javascript\">var disqus_shortname = '[%disqusgroupname%]';\n(function() {\nvar dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;\ndsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';\n(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);\n})();\n</script>";
 
 function patchPrefs () {
 	console.log ("patchPrefs");
@@ -354,15 +358,6 @@ function newButtonClick () {
 function viewPublishedUrl () {
 	$("#idPublishedUrl").html ("<a href=\"" + appPrefs.lastPublishedUrl + "\" target=\"_blank\">" + appPrefs.lastPublishedUrl + "</a>");
 	}
-function getCommentHtml (whenCreated) {
-	if (appPrefs.flDisqusComments) {
-		var code = "&lt;div class=\"divComments\">&lt;script>var disqus_identifier = \"" + whenCreated + "\"&lt;/script>&lt;div id=\"disqus_thread\">&lt;/div>&lt;/div>&lt;script type=\"text/javascript\" src=\"http://disqus.com/forums/" + appPrefs.disqusGroupName + "/embed.js\">&lt;/script>&lt;/div>&lt;/div>";
-		return (code.replace (/&lt;/g,'<'));
-		}
-	else {
-		return ("");
-		}
-	}
 function publishButtonClick (flInteract, callback) {
 	//Changes
 		//3/24/15; 6:53:47 PM by DW
@@ -391,7 +386,7 @@ function publishButtonClick (flInteract, callback) {
 		
 		
 	function uploadOnce (templatetext, callback) {
-		var username = twGetScreenName ();
+		var username = twGetScreenName (), commentstext = "";
 		var filepath = replaceAll (theData.filePath, ".json", ".html");
 		var urlpage = appPrefs.lastPublishedUrl; //"http://myword.io/users/" + username + filepath;
 		var urlimage = theData.img;
@@ -402,6 +397,10 @@ function publishButtonClick (flInteract, callback) {
 			else {
 				urlimage = globalDefaultImageUrl;
 				}
+			}
+		
+		if (appPrefs.flDisqusComments) {//3/31/15 by DW
+			commentstext = replaceAll (disqusCode, "[%disqusgroupname%]", appPrefs.disqusGroupName);
 			}
 		
 		var pagetable = { //3/30/15 by DW -- add appPrefs and appConsts to the pagetable
@@ -428,7 +427,8 @@ function publishButtonClick (flInteract, callback) {
 		copyScalars (appConsts, pagetable.appConsts);
 		copyScalars (appPrefs, pagetable.appPrefs);
 		pagetable.pagetableinjson = jsonStringify (pagetable);
-		pagetable.commenttext = getCommentHtml (theData.when);
+		pagetable.disquscomments = commentstext; //3/31/15 by DW
+		pagetable.commenttext = commentstext; //4/1/15 by DW -- grandfathered, first version of default template used this name
 		pagetable.renderedtext = new Markdown.Converter ().makeHtml (pagetable.body); //for substitution in the template -- 3/26/15 by DW
 		
 		var renderedtext = multipleReplaceAll (templatetext, pagetable, false, "[%", "%]");
