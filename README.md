@@ -36,6 +36,10 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 I did a survey of the open source JavaScript editors. They are amazing. I decided that rather than pick a winner, I'd ship a pre-HTML5 &lt;textarea>-based editor, and let's see if anyone wants to take on creating a beautiful integration of the two ideas. Here's a <a href="http://scripting.com/2015/03/20/beautifulJavascriptEditors.html">blog post</a> that explains my thinking, and offers some possible next steps.
 
+#### v0.63 -- 4/2/15 by DW
+
+Took a step toward <a href="http://myword.smallpict.com/2015/04/02/towardEditorPlugins.html">editor plug-ins</a>. 
+
 #### v0.62 -- 4/1/15 by DW
 
 Support for Disqus comments. See this <a href="http://myword.smallpict.com/2015/04/01/disqusCommentsInMyword.html">blog post</a> for details.

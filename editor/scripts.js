@@ -1,3 +1,5 @@
+//See this blog post for info on replacing this code. 
+//http://myword.smallpict.com/2015/04/02/towardEditorPlugins.html
 function getEditorText (s) {
 	return ($("#idTextArea").val ());
 	}
