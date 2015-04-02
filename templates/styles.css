@@ -143,8 +143,8 @@ body {
 	border: 1px solid silver;
 	padding: 8px;
 	background-color: white;
-	margin-top: 30px;
-	margin-bottom: 30px;
+	margin-top: 50px;
+	margin-bottom: 50px;
 	}
 .emoji {
 	width: 1em;
@@ -204,6 +204,9 @@ body {
 .divFooterText {
 	border-top: 1px solid silver;
 	text-align: center;
+	}
+.divFooterText p {
+	margin-top: 5px;
 	}
 
 

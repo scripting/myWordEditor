@@ -2,7 +2,7 @@
 
 A simple silo-free blogging tool that creates beautiful essay pages. 
 
-Here's an <a href="http://myword.io/users/davewiner/essays/016.html">example</a> of the kind of page you can create with MyWord Editor.
+Here's an <a href="http://myword.io/users/davewiner/essays/030.html">example</a> of the kind of page you can create with MyWord Editor.
 
 And the <a href="http://scripting.com/2015/03/23/mywordEditorIsOpenSource.html">blog post</a> announcing the release of MyWord Editor in open source.
 

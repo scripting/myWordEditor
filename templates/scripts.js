@@ -230,7 +230,7 @@ function startup () {
 	var tocparam = decodeURIComponent (getURLParameter ("tocOpen")), flSnapOpenInitially = false;
 	var markdown = new Markdown.Converter (), now = new Date (), flmarkdown;
 	console.log ("startup");
-	$("#idVersionNumber").html ("<a href=\"https://github.com/scripting/myWord\" target=\"_blank\">v" + appConsts.version + "</a>");
+	$("#idVersionNumber").html ("<a href=\"https://github.com/scripting/myWordEditor\" target=\"_blank\">v" + appConsts.version + "</a>");
 	initGoogleAnalytics (); 
 	hitCounter ();
 	if (urlparam != "null") {
