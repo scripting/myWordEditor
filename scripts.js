@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.62"
+	version: "0.63"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -37,6 +37,7 @@ var appPrefs = {
 	flUseDefaultImage: false, defaultImageUrl: "",
 	nameDefaultTemplate: "default", //3/29/15 by DW
 	flDisqusComments: true, disqusGroupName: "mywordcomments", //3/31/15 by DW
+	nameTextEditor: "html4", //4/1/15 by DW
 	lastTweetText: "", lastUserName: "davewiner",
 	fileSerialnum: 0,
 	lastFilePath: "",
@@ -277,8 +278,6 @@ function applyPrefs () {
 	
 	prefsChanged ();
 	}
-function keyupTextArea () {
-	}
 function newFileData () { //set fields of theData to represent a new file
 	theData.body = "";
 	theData.title = "";
@@ -319,15 +318,15 @@ function dataToFields () {
 	$("#idDescription").val (theData.description);
 	$("#idTemplateSelect").val (theData.nameTemplate); //3/28/15 by DW
 	$("#idImageUrl").val (theData.img);
-	$("#idTextArea").val (getBodyText ());
+	setEditorText (getBodyText ()); //4/2/15 by DW
 	}
 function fieldsToData () {
-	theData.body = $("#idTextArea").val ();
+	theData.body = getEditorText (); //4/2/15 by DW
 	theData.title = $("#idTitle").val ();
 	theData.description = $("#idDescription").val ();
 	theData.nameTemplate = $("#idTemplateSelect").val (); //3/28/15 by DW
 	theData.img = $("#idImageUrl").val ();
-	theData.subs = $("#idTextArea").val ().split ("\n\n");
+	theData.subs = getEditorText ().split ("\n\n"); //4/2/15 by DW
 	}
 function saveButtonClick (callback) {
 	var now = new Date ();
@@ -502,7 +501,7 @@ function openEssayFile (callback) {
 					if (theData.nameTemplate === undefined) {
 						theData.nameTemplate = appPrefs.nameDefaultTemplate;
 						}
-					$("#idTextArea").val (theData.body);
+					setEditorText (theData.body); //4/2/15 by DW
 					$("#idTitle").val (theData.title);
 					$("#idDescription").val (theData.description);
 					$("#idImageUrl").val (theData.img);
@@ -691,6 +690,7 @@ function startup () {
 						flStartupFail = !flGoodStart;
 						patchPrefs (); //3/27/15 by DW
 						if (flGoodStart) {
+							initEditor (); //4/2/15 by DW
 							openEssayFile (function () {
 								showHideEditor ();
 								viewPublishedUrl ();

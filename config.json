@@ -4,7 +4,6 @@
 	"googleAnalyticsAccount": "UA-39531990-1",
 	"templates": {
 		"Default": "http://myword.io/templates/default.html",
-		"Plain": "http://myword.io/templates/plain/template.html",
-		"Hyde": "http://myword.io/templates/hyde/myword/template.html"
+		"Plain": "http://myword.io/templates/plain/template.html"
 		}
 	}
