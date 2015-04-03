@@ -5,5 +5,6 @@
 	"templates": {
 		"Default": "http://myword.io/templates/default.html",
 		"Plain": "http://myword.io/templates/plain/template.html"
-		}
+		},
+	"startupCode": "console.log (\"Hello from config.startupCode.\");"
 	}

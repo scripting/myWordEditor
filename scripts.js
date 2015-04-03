@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.63"
+	version: "0.64"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -87,6 +87,16 @@ function patchPrefs () {
 				prefsChanged ();
 				}
 			}
+	}
+function runStartupCode () { //4/3/15 by DW
+	if (config != undefined) {
+		if (config.startupCode != undefined) {
+			if (config.startupCode.length > 0) {
+				var s = config.startupCode.replace ("\n", "");
+				eval (s);
+				}
+			}
+		}
 	}
 function getAllPosts (callback) {
 	var postArray = [];
@@ -717,6 +727,7 @@ function startup () {
 											}
 										twitterToPrefs (userData); //fill in RSS prefs with info we got from Twitter
 										});
+									runStartupCode (); //4/3/15 by DW
 									self.setInterval (everySecond, 1000); 
 									});
 								});
