@@ -25,7 +25,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.64"
+	version: "0.65"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -367,6 +367,11 @@ function newButtonClick () {
 function viewPublishedUrl () {
 	$("#idPublishedUrl").html ("<a href=\"" + appPrefs.lastPublishedUrl + "\" target=\"_blank\">" + appPrefs.lastPublishedUrl + "</a>");
 	}
+
+function getRenderedText (templatetext, pagetable) { //4/9/15 by DW
+	return (multipleReplaceAll (templatetext, pagetable, false, "[%", "%]"));
+	}
+
 function publishButtonClick (flInteract, callback) {
 	//Changes
 		//3/24/15; 6:53:47 PM by DW
@@ -440,7 +445,7 @@ function publishButtonClick (flInteract, callback) {
 		pagetable.commenttext = commentstext; //4/1/15 by DW -- grandfathered, first version of default template used this name
 		pagetable.renderedtext = new Markdown.Converter ().makeHtml (pagetable.body); //for substitution in the template -- 3/26/15 by DW
 		
-		var renderedtext = multipleReplaceAll (templatetext, pagetable, false, "[%", "%]");
+		var renderedtext = getRenderedText (templatetext, pagetable); //4/9/15 by DW
 		twUploadFile (theData.filePath, pagetable.pagetableinjson, "application/json", false, function (data) {
 			theData.linkJson = data.url;
 			twUploadFile (filepath, renderedtext, "text/html", false, function (data) {
