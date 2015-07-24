@@ -1,35 +1,39 @@
-//The MIT License (MIT)
+/* The MIT License (MIT)
 	
-	//Copyright (c) 2015 Dave Winer
+	Copyright (c) 2015 Dave Winer
 	
-	//Permission is hereby granted, free of charge, to any person obtaining a copy
-	//of this software and associated documentation files (the "Software"), to deal
-	//in the Software without restriction, including without limitation the rights
-	//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	//copies of the Software, and to permit persons to whom the Software is
-	//furnished to do so, subject to the following conditions:
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
 	
-	//The above copyright notice and this permission notice shall be included in all
-	//copies or substantial portions of the Software.
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
 	
-	//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-	//SOFTWARE.
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+	*/
+
 var appConsts = {
 	productname: "myWordEditor",
 	productnameForDisplay: "MyWord Editor",
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.64"
+	version: "0.67"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
 	ctStartups: 0, minSecsBetwAutoSaves: 3,
+	flAutoPublish: false,
+	flMarkdownProcess: false,
 	textFont: "Ubuntu", textFontSize: 18, textLineHeight: 24,
 	flDisqusComments: false, disqusGroupName: "smallpict",
 	flRssPrefsInitialized: false, rssTitle: "", rssDescription: "", rssLink: "", rssMaxItemsInFeed: 25, rssLanguage: "en-us", 
@@ -46,6 +50,7 @@ var appPrefs = {
 var flStartupFail = false;
 var flPrefsChanged = false, flFeedChanged = false, flHistoryChanged = false;
 var whenLastUserAction = new Date ();
+var myTextFilename = "myTextFile.txt";
 var globalDefaultImageUrl = "http://scripting.com/2015/03/06/allmans.png";
 
 var theData = { //the file being edited now
@@ -67,13 +72,11 @@ var jsontextForLastSave;
 var whenLastUserAction = new Date (), whenLastKeystroke = whenLastUserAction;
 var randomMysteryString, ctCloseAttempts = 0;
 var fnameconfig = "config.json"; //3/20/15 by DW
-
 var config; //3/28/15 by DW
 var defaultTemplates = {
 	"Default": "http://myword.io/templates/default.html",
 	"Plain": "http://myword.io/templates/plain/template.html"
 	};
-
 var disqusCode =  //3/31/15 by DW
 	"<div id=\"disqus_thread\"></div>\n<script type=\"text/javascript\">var disqus_shortname = '[%disqusgroupname%]';\n(function() {\nvar dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;\ndsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';\n(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);\n})();\n</script>";
 
@@ -87,6 +90,8 @@ function patchPrefs () {
 				prefsChanged ();
 				}
 			}
+	}
+function keyupTextArea () {
 	}
 function runStartupCode () { //4/3/15 by DW
 	if (config != undefined) {
@@ -227,6 +232,11 @@ function buildHistoryMenu () { //3/27/15 by DW
 		//set text of menu item
 			var itemtext = obj.title;
 			itemtext = maxLengthString (itemtext, maxCharsHistoryMenuItem);
+			
+			if (obj.filepath == appPrefs.lastFilePath) { 
+				itemtext = "<i class=\"fa fa-check iMenuCheck\"></i>" + itemtext;
+				}
+			
 			if (itemtext.length === 0) {
 				itemtext = "&nbsp;";
 				}
@@ -313,30 +323,62 @@ function newFileData () { //set fields of theData to represent a new file
 	viewPublishedUrl ();
 	prefsChanged ();
 	}
-function dataToFields () {
-	function getBodyText () {
-		var s = "";
-		for (var i = 0; i < theData.subs.length; i++) {
-			if (s.length > 0) {
-				s += "\n\n";
-				}
-			s += theData.subs [i];
+
+function setBackgroundImage () {
+	askDialog ("URL of background image:", theData.img, "Enter the URL of your background image here.", function (s, flcancel) {
+		if (!flcancel) {
+			theData.img = s;
+			prefsChanged ();
 			}
-		return (s);
+		});
+	}
+function setEditorFields (titletext, descriptiontext, bodytext) {
+	$("#idTitleEditor").html (titletext);
+	var editorTitle = new MediumEditor (".divTitleEditor", {
+		placeholder: {
+			text: "Title"
+			},
+		buttonLabels: "fontawesome",
+		disableReturn: true
+		});
+	
+	$("#idDescriptionEditor").html (descriptiontext);
+	var editorDescription = new MediumEditor (".divDescriptionEditor", {
+		placeholder: {
+			text: "Description"
+			},
+		buttonLabels: "fontawesome",
+		disableReturn: true
+		});
+	
+	$("#idBodyEditor").html (bodytext);
+	var editorBody = new MediumEditor (".divBodyEditor", {
+		placeholder: {
+			text: "Tell your story..."
+			},
+		buttonLabels: "fontawesome"
+		});
+	}
+function subsToText (subs) {
+	var s = "";
+	for (var i = 0; i < subs.length; i++) {
+		s += "<p>" + subs [i] + "</p>\n";
 		}
-	$("#idTitle").val (theData.title);
-	$("#idDescription").val (theData.description);
-	$("#idTemplateSelect").val (theData.nameTemplate); //3/28/15 by DW
-	$("#idImageUrl").val (theData.img);
-	setEditorText (getBodyText ()); //4/2/15 by DW
+	return (s);
+	}
+
+function dataToFields () {
+	
+	setEditorFields (theData.title, theData.description, subsToText (theData.subs));
+	
+	
 	}
 function fieldsToData () {
-	theData.body = getEditorText (); //4/2/15 by DW
-	theData.title = $("#idTitle").val ();
-	theData.description = $("#idDescription").val ();
-	theData.nameTemplate = $("#idTemplateSelect").val (); //3/28/15 by DW
-	theData.img = $("#idImageUrl").val ();
-	theData.subs = getEditorText ().split ("\n\n"); //4/2/15 by DW
+	theData.title = $("#idTitleEditor").html ();
+	theData.description = $("#idDescriptionEditor").html ();
+	theData.body = $("#idBodyEditor").html ();
+	theData.subs = theData.body.split ("\n\n"); //4/2/15 by DW
+	
 	}
 function saveButtonClick (callback) {
 	var now = new Date ();
@@ -373,6 +415,21 @@ function publishButtonClick (flInteract, callback) {
 			//New optional param, flInteract. If false, we don't put up a dialog asking if the user wants to see the rendered file. 
 		//3/21/15; 5:31:07 PM by DW
 			//There is one specific circumstance where we have to upload twice. If appPrefs.lastPublishedUrl is the empty string, we upload the first time to set the value, then upload again, so that it can be correct in the pagetable. The Facebook metadata needs the canonical URL for the page to be correct. 
+	function markdownProcess (s) {
+		if (appPrefs.flMarkdownProcess) {
+			var md = new Markdown.Converter (), theList = s.split ("</p><p>"), markdowntext = "";
+			for (var i = 0; i < theList.length; i++) {
+				var lt = theList [i];
+				if ((lt.length > 0) && (lt != "<p>") && (lt != "</p>")) {
+					markdowntext += "<p>" + md.makeHtml (lt) + "</p>";
+					}
+				}
+			return (markdowntext);
+			}
+		else {
+			return (s);
+			}
+		}
 	var now = new Date (), urlTemplate;
 	if (flInteract === undefined) {
 		flInteract = true;
@@ -438,13 +495,14 @@ function publishButtonClick (flInteract, callback) {
 		pagetable.pagetableinjson = jsonStringify (pagetable);
 		pagetable.disquscomments = commentstext; //3/31/15 by DW
 		pagetable.commenttext = commentstext; //4/1/15 by DW -- grandfathered, first version of default template used this name
-		pagetable.renderedtext = new Markdown.Converter ().makeHtml (pagetable.body); //for substitution in the template -- 3/26/15 by DW
+		pagetable.renderedtext = markdownProcess (pagetable.body); //for substitution in the template -- 3/26/15 by DW
 		
 		var renderedtext = multipleReplaceAll (templatetext, pagetable, false, "[%", "%]");
 		twUploadFile (theData.filePath, pagetable.pagetableinjson, "application/json", false, function (data) {
 			theData.linkJson = data.url;
 			twUploadFile (filepath, renderedtext, "text/html", false, function (data) {
-				console.log ("publishButtonClick: " + data.url + " (" + secondsSince (now) + " seconds)");
+				console.log ("publishButtonClick: " + data.url + " (" + secondsSince (now) + " seconds)"); 
+				theData.publishedUrl = data.url;
 				callback (data);
 				});
 			});
@@ -504,6 +562,7 @@ function openEssayFile (callback) {
 			}
 		}
 	else {
+		console.log ("openEssayFile: appPrefs.lastFilePath == " + appPrefs.lastFilePath);
 		twGetFile (appPrefs.lastFilePath, true, true, function (error, data) {
 			if (data != undefined) {
 				try {
@@ -511,11 +570,6 @@ function openEssayFile (callback) {
 					if (theData.nameTemplate === undefined) {
 						theData.nameTemplate = appPrefs.nameDefaultTemplate;
 						}
-					setEditorText (theData.body); //4/2/15 by DW
-					$("#idTitle").val (theData.title);
-					$("#idDescription").val (theData.description);
-					$("#idImageUrl").val (theData.img);
-					$("#idTemplateSelect").val (theData.nameTemplate); //3/28/15 by DW
 					console.log ("openEssayFile: " + data.filedata.length + " chars.");
 					}
 				catch (err) {
@@ -591,6 +645,12 @@ function initMenus () {
 	twUpdateTwitterMenuItem ("idTwitterConnectMenuItem");
 	twUpdateTwitterUsername ("idTwitterUsername");
 	}
+function tellOtherInstancesToQuit () {
+	randomMysteryString = getRandomPassword (25);
+	localStorage.youAreNotNeeded = randomMysteryString; 
+	}
+function initEditor () {
+	}
 function everySecond () {
 	var now = clockNow ();
 	twUpdateTwitterMenuItem ("idTwitterConnectMenuItem");
@@ -604,7 +664,11 @@ function everySecond () {
 			fieldsToData ();
 			jsontext = jsonStringify (theData);
 			if (jsontext != jsontextForLastSave) {
-				saveButtonClick ();
+				saveButtonClick (function () {
+					if (appPrefs.flAutoPublish) { //7/23/15 by DW
+						publishButtonClick (false);
+						}
+					});
 				}
 			}
 	
@@ -631,9 +695,24 @@ function everySecond () {
 				}
 			}
 	}
-function tellOtherInstancesToQuit () {
-	randomMysteryString = getRandomPassword (25);
-	localStorage.youAreNotNeeded = randomMysteryString; 
+function onKeyup () {
+	whenLastUserAction = new Date ();
+	whenLastKeystroke = whenLastUserAction;
+	}
+function initCmdKeys () {
+	myCombos = [
+		{ //Cmd-P to publish
+			"keys": "meta p",
+			"is_ordered": true,
+			"on_keydown": function (ev) {
+				publishButtonClick ();
+				event.stopPropagation ();
+				event.preventDefault ();
+				return (false);
+				}
+			}
+		];
+	keypress.register_many (myCombos);
 	}
 function startup () {
 	var flSkipConfigRead = false;
@@ -674,19 +753,22 @@ function startup () {
 			});
 		}
 	console.log ("startup");
+	hitCounter (); 
+	initGoogleAnalytics (); 
 	$("#idTwitterIcon").html (twStorageConsts.fontAwesomeIcon);
 	$("#idVersionNumber").html ("v" + appConsts.version);
-	$("#idEditor").keyup (function () {
-		whenLastUserAction = new Date ();
-		whenLastKeystroke = whenLastUserAction;
-		});
+	$("#idTitleEditor").keyup (onKeyup);
+	$("#idDescriptionEditor").keyup (onKeyup);
+	$("#idBodyEditor").keyup (onKeyup);
+	initCmdKeys ();
 	initMenus ();
-	hitCounter (); 
 	tellOtherInstancesToQuit ();
 	twGetOauthParams (); //redirects if OAuth params are present
 	//determine the URL of the nodeStorage server -- 3/19/15 by DW
 		if (localStorage.urlTwitterServer !== undefined) {
 			twStorageData.urlTwitterServer = localStorage.urlTwitterServer;
+			//if the user specified a server that happens to be our server, patch it up with the new URL
+				twStorageData.urlTwitterServer = replaceAll (twStorageData.urlTwitterServer, "http://twitter.myword.io/", appConsts.urlTwitterServer); //5/9/15 by DW
 			flSkipConfigRead = true; //the localStorage value takes precedence
 			}
 		else {
@@ -743,4 +825,8 @@ function startup () {
 			showHideEditor ();
 			}
 		});
+	
+	
+	
+	
 	}

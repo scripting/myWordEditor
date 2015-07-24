@@ -1,5 +1,5 @@
 body {
-	font-family: Ubuntu;
+	font-family: "Open Sans";
 	font-size: 18px;
 	background-color: whitesmoke;
 	}
@@ -93,7 +93,7 @@ body {
 	line-height: 145%;
 	}
 .divSubhead {
-	font-family: "Ubuntu";
+	font-family: "Open Sans";
 	font-weight: bold;
 	margin-top: 1em;
 	margin-bottom: .15em;
@@ -209,6 +209,15 @@ body {
 	margin-top: 5px;
 	}
 
+
+code {
+	font-size: .9em;
+	background-color: inherit;
+	color: inherit;
+	}
+h1, h2, h3, h4 {
+	font-family: "Open Sans";
+	}
 
 
 @media only screen 

@@ -1,101 +1,99 @@
 body {
 	font-family: Ubuntu;
 	font-size: 18px;
+	line-height: 140%;
 	background-color: whitesmoke;
 	}
 .divPageBody {
 	width: 65%;
-	margin-top: 90px;
-	margin-left: 10%;
+	margin-top: 120px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 400px;
 	}
-.myTextArea {
-	font-family: "Ubuntu";
-	font-size: 18px;
-	line-height: 24px;
+.divBodyEditor {
+	font-family: "Merriweather";
+	font-size: 19px;
+	letter-spacing: 0.01rem;
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1.69;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-top: 40px;
+	min-height: 300px;
+	}
+.divBodyEditor p {
+	margin-top: 3px;
+	margin-bottom: 17px;
+	}
+.divBodyEditor h3 {
+	font-family: "Open Sans";
+	font-size: 1.3em;
+	margin-top: 0;
+	}
+.divBodyEditor h2 {
+	font-family: "Open Sans";
+	font-size: 1.7em;
+	margin-top: 0;
+	}
+.divTitleEditor {
+	font-family: "Open Sans";
+	font-size: 50px;
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	min-height: 1em;
 	
-	width: 100%; 
-	height: 400px;
-	border: 1px solid silver;
+	padding-top: .3em;
+	padding-bottom: .3em;
+	padding-left: 6px;
+	padding-right: 6px;
+	line-height: 100%;
 	}
-.myDescriptionArea {
-	font-family: "Ubuntu";
-	font-size: 18px;
-	width: 100%; 
-	height: 70px;
-	border: 1px solid silver;
+.divTitleEditor p {
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
 	}
-.myInputItem {
-	font-family: "Ubuntu";
-	font-size: 18px;
-	width: 100%; 
-	font-size: 18px !important;
-	padding: 2px !important; 
-	height: 32px !important; 
+.divDescriptionEditor {
+	font-family: "Open Sans";
+	font-size: 30px;
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	min-height: 1em;
+	margin-top: 0;
+	
+	padding-top: .3em;
+	padding-bottom: .3em;
+	padding-left: 6px;
+	padding-right: 6px;
+	line-height: 100%;
 	}
-.imageUrlItem {
-	width: 75%;
+:focus, :visited:focus {
+	
+	outline: 1px solid silver;
+	background-color: white;
+	
 	}
-.divTemplateMenu {
-	float: right;
+.divBelowTheFold {
+	margin-top: 40px;
 	}
-.divTemplateMenu select {
-	font-family: "Ubuntu";
-	font-size: 18px;
-	width: 150px;
-	height: 32px !important; 
+.divChangeNotes {
+	margin-top: 25px;
 	}
-.form-horizontal .control-label {
-	width: 170px;
+.divChangeNotes li {
+	margin-bottom: .4em;
 	}
-.form-horizontal .control-group {
-	margin-bottom: 15px;
-	}
-label {
-	font-family: "Ubuntu";
-	font-size: 18px;
+.medium-editor-placeholder:after {
+	font-style: normal;
+	font-size: 1em;
+	top: .3em;
 	}
 .divVersionNumber {
 	font-size: 12px;
-	color: #777777;
 	float: right;
 	padding: 19px;
 	}
-.btnSave {
-	float: right;
-	width: 120px;
-	margin-top: 8px;
-	}
-.btnNew {
-	float: left;
-	width: 120px;
-	margin-top: 8px;
-	}
-.btnPublish {
-	float: right;
-	width: 120px;
-	margin-top: 8px;
-	}
-.divPublishedUrl {
-	font-size: 14px;
-	margin-top: 10px;
-	display: none;
-	}
-.divFileOpenDialog ul {
-	list-style-type: none;
-	}
-.divFileOpenDialog li {
-	line-height: 1.4em;
-	cursor: pointer;
-	}
-.divFileOpenDialog .btn {
-	width: 70px;
-	}
-.divLogonMessage {
-	font-size: 18px;
-	line-height: 1.5em;
-	margin-left: 25%;
-	margin-top: 15%;
-	}
-.divLogonMessage a {
-	cursor: pointer;
+.iMenuCheck {
+	margin-left: -20px;
+	margin-right: 4px;
 	}

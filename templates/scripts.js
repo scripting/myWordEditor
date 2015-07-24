@@ -1,30 +1,31 @@
-//The MIT License (MIT)
+/* The MIT License (MIT)
 	
-	//Copyright (c) 2015 Dave Winer
+	Copyright (c) 2015 Dave Winer
 	
-	//Permission is hereby granted, free of charge, to any person obtaining a copy
-	//of this software and associated documentation files (the "Software"), to deal
-	//in the Software without restriction, including without limitation the rights
-	//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	//copies of the Software, and to permit persons to whom the Software is
-	//furnished to do so, subject to the following conditions:
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
 	
-	//The above copyright notice and this permission notice shall be included in all
-	//copies or substantial portions of the Software.
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
 	
-	//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-	//SOFTWARE.
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+	*/
 var appConsts = {
 	productname: "myWord",
 	productnameForDisplay: "MyWord Editor",
 	productLink: "http://myword.io/editor/",
 	domain: "myword.io", 
-	version: "0.52"
+	version: "0.53"
 	}
 var defaultImageUrl = "http://scripting.com/2015/03/06/allmans.png";
 var mySnap, flSnapDrawerOpen = false;
@@ -41,6 +42,7 @@ document.write ('<script src="http://api.nodestorage.io/ui/markdownConverter.js"
 document.write ('<script src="http://api.nodestorage.io/ui/emojify.js"></script>');
 
 document.write ("<link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>"); //3/23/15 by DW
+document.write ('<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,800" rel="stylesheet" type="text/css">');
 
 document.write ("<script src='http://fargo.io/code/shared/xml.js'></script>");
 document.write ("<script src='http://fargo.io/cms/snap/snap.js'></script>");
@@ -168,23 +170,6 @@ function viewPostFromEditor (pagetable) {
 				$("#idBackgroundImage").css ("background-image", "url(" + imgurl + ")");
 				}
 			}
-	//title
-		if (pagetable.ogtitle != undefined) {
-			if ($("#idPageTitle")) {
-				$("#idPageTitle").html (pagetable.ogtitle);
-				}
-			}
-		if (pagetable.pagetitle != undefined) {
-			var titleprefix;
-			if (pagetable.appPrefs.authorName) {
-				titleprefix = pagetable.appPrefs.authorName;
-				}
-			else {
-				titleprefix = appConsts.productnameForDisplay;
-				}
-			document.title = titleprefix + ": " + pagetable.pagetitle;
-			}
-		
 	//byline
 		if (pagetable.authorname != undefined) {
 			if ($("#idPageByline")) {
@@ -206,6 +191,30 @@ function viewPostFromEditor (pagetable) {
 				$("#idPageByline").html (byline + ".");
 				}
 			}
+	//footer text
+		if ($("#idPageFooter")) {
+			$("#idPageFooter").html ("<div class=\"divFooterText\">" + getFooterText (pagetable) + "</div>");
+			}
+	
+	return; //7/23/15 by DW
+	
+	//title
+		if (pagetable.ogtitle != undefined) {
+			if ($("#idPageTitle")) {
+				$("#idPageTitle").html (pagetable.ogtitle);
+				}
+			}
+		if (pagetable.pagetitle != undefined) {
+			var titleprefix;
+			if (pagetable.appPrefs.authorName) {
+				titleprefix = pagetable.appPrefs.authorName;
+				}
+			else {
+				titleprefix = appConsts.productnameForDisplay;
+				}
+			document.title = titleprefix + ": " + pagetable.pagetitle;
+			}
+		
 	//description
 		if (pagetable.ogdescription != undefined) {
 			if ($("#idPageDescription")) {
@@ -218,10 +227,6 @@ function viewPostFromEditor (pagetable) {
 				var essaytext = "<div class=\"divMarkdownText\">" + markdown.makeHtml (emojifyString (pagetable.body)) + "</div>";
 				$("#idEssayText").html (essaytext);
 				}
-			}
-	//footer text
-		if ($("#idPageFooter")) {
-			$("#idPageFooter").html ("<div class=\"divFooterText\">" + getFooterText (pagetable) + "</div>");
 			}
 	}
 

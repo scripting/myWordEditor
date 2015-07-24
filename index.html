@@ -28,9 +28,18 @@
 		
 		<script src="http://api.nodestorage.io/api.js"></script>
 		
+		<link rel="stylesheet" href="http://fargo.io/code/editors/mediumeditor/dist/css/medium-editor.css"> 
+		<link rel="stylesheet" href="http://fargo.io/code/editors/mediumeditor/dist/css/themes/default.css"> 
+		<script src="http://fargo.io/code/editors/mediumeditor/dist/js/medium-editor.js"></script>
+		
+		<script src="http://fargo.io/code/keypress.js" /></script>
+		
 		<script src="scripts.js"></script>
 		<link href="styles.css" rel="stylesheet" type="text/css">
-		<script src="editor/scripts.js"></script>
+		
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Merriweather:400,700,700italic,400italic' rel='stylesheet' type='text/css'>
+		
 		</head>
 	<body>
 		<div class="divMenubar" id="idMenubar">
@@ -43,15 +52,23 @@
 						<div class="container">
 							<a class="brand" href="/"><span id="idMenuProductName"></span></a>
 							<ul class="nav" id="idMainMenuList">
-								
+								<li class="dropdown" id="idPublishMenu"> 
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Publish&nbsp;<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a onclick="publishButtonClick ();"><span class="menuKeystroke">Cmd-P</span>Publish...</a></li>
+										<li><a onclick="publishAllPosts ();">Publish all...</a></li>
+										<li class="divider"></li>
+										<li><a onclick="viewPublishedFile ();">View story...</a></li>
+										</ul>
+									</li>
 								<li class="dropdown" id="idEditorMenu"> 
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Editor&nbsp;<b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li><a onclick="viewPublishedFile ();">View published file...</a></li>
+										<li><a onclick="newButtonClick ();">New story...</a></li>
+										<li class="divider"></li>
+										<li><a onclick="setBackgroundImage ();">Set background image...</a></li>
 										<li><a onclick="viewFeed ();">View RSS feed...</a></li>
 										<li><a onclick="getPostsInJson ();">Get JSON backup...</a></li>
-										<li class="divider"></li>
-										<li><a onclick="publishAllPosts ();">Publish all posts...</a></li>
 										<li class="divider"></li>
 										<li><a onclick="switchServer ();">Switch server...</a></li>
 										</ul>
@@ -91,17 +108,6 @@
 					</div>
 				</div>
 			</div>
-		<div class="divFileOpenDialog">
-			<div id="idFileOpenDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="attEditorLabel" aria-hidden="true">
-				<div class="modal-body">
-					<div id="idWhereToDisplayFileList">
-						</div>
-					</div>
-				<div class="modal-footer">
-					<a href="#" class="btn btn-primary" onclick="closeFileOpenDialog ();">Close</a>
-					</div>
-				</div>
-			</div>
 		<div class="divPrefsDialog" comment="This is the Settings dialog.">
 			<div id="idPrefsDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true">
 				<div class="modal-body">
@@ -110,35 +116,41 @@
 	<div class="divTabsFromOutline">
 	<div class="tabbable">
 		<ul class="nav nav-tabs" data-tabs="tabs">
-			<li class="active" ><a href="#idYou51"  data-toggle="tab">You</a></li>
-			<li><a href="#idFeed51"  data-toggle="tab">Feed</a></li>
-			<li><a href="#idImage51"  data-toggle="tab">Image</a></li>
-			<li><a href="#idCms51"  data-toggle="tab">CMS</a></li>
+			<li class="active" ><a href="#idYou290"  data-toggle="tab">You</a></li>
+			<li><a href="#idFeed290"  data-toggle="tab">Feed</a></li>
+			<li><a href="#idImage290"  data-toggle="tab">Image</a></li>
+			<li><a href="#idCms290"  data-toggle="tab">CMS</a></li>
+			<li><a href="#idPublish290"  data-toggle="tab">Publish</a></li>
 			</ul>
 		<div id="my-tab-content" class="tab-content">
-			<div class="active tab-pane" id="idYou51">
+			<div class="active tab-pane" id="idYou290">
 				<fieldset>
 					<div class="divPrefs">	<div class="clearfix">	<label for="authorName">Name:</label>	<div class="input">		<input class="xlarge prefsInput" id="authorName" name="authorName" size="50" type="text" value="" placeholder="Your name." />		</div>	</div><div class="clearfix">	<label for="authorWebsite">Website:</label>	<div class="input">		<input class="xlarge prefsInput" id="authorWebsite" name="authorWebsite" size="50" type="text" value="" placeholder="Your website." />		</div>	</div>	</div>
 					</fieldset>
 						</div>
-					<div class="tab-pane" id="idFeed51">
+					<div class="tab-pane" id="idFeed290">
 						<fieldset>
 							<div class="divPrefs">	<p>You can set the title, link and description for the RSS feed that Radio3 maintains.</p><div class="clearfix">	<label for="rssTitle">Title:</label>	<div class="input">		<input class="xlarge prefsInput" id="rssTitle" name="rssTitle" size="50" type="text" value="" placeholder="The &lt;title> element for the feed." />		</div>	</div><div class="clearfix">	<label for="rssLink">Link:</label>	<div class="input">		<input class="xlarge prefsInput" id="rssLink" name="rssLink" size="50" type="text" value="" placeholder="The &lt;link> element for the feed." />		</div>	</div><div class="clearfix">	<label for="rssDescription">Description:</label>	<div class="input">		<textarea class="xxlarge" id="rssDescription" name="rssDescription" cols="70" rows="3"placeholder="The &lt;description> element for the feed." ></textarea>		</div>	</div>	</div>
 							</fieldset>
 								</div>
-							<div class="tab-pane" id="idImage51">
+							<div class="tab-pane" id="idImage290">
 								<fieldset>
 									<div class="divPrefs">	<div class="clearfix">	<label for="flUseDefaultImage"></label>	<div class="input">		<input type="checkbox" name="flUseDefaultImage" value=xxx>&nbsp;Use default image if no image is specified.		</div>	</div><div class="clearfix">	<label for="defaultImageUrl">URL:</label>	<div class="input">		<input class="xlarge prefsInput" id="defaultImageUrl" name="defaultImageUrl" size="50" type="text" value="" placeholder="We'll use this image for essays where no image is specified." />		</div>	</div>	</div>
 									</fieldset>
 										</div>
-									<div class="tab-pane" id="idCms51">
+									<div class="tab-pane" id="idCms290">
 										<fieldset>
 											<div class="divPrefs">	<div class="clearfix">	<label for="nameDefaultTemplate">Template name:</label>	<div class="input">		<input class="xlarge prefsInput" id="nameDefaultTemplate" name="nameDefaultTemplate" size="50" type="text" value="" placeholder="The name of the template to use for new essays." />		</div>	</div><div class="clearfix">	<label for="flDisqusComments"></label>	<div class="input">		<input type="checkbox" name="flDisqusComments" value=xxx>&nbsp;Include Disqus comments on your pages?		</div>	</div><div class="clearfix">	<label for="disqusGroupName">Group name:</label>	<div class="input">		<input class="xlarge prefsInput" id="disqusGroupName" name="disqusGroupName" size="50" type="text" value="" placeholder="The name of your Disqus comment group." />		</div>	</div>	</div>
 											</fieldset>
 												</div>
+											<div class="tab-pane" id="idPublish290">
+												<fieldset>
+													<div class="divPrefs">	<div class="clearfix">	<label for="flMarkdownProcess"></label>	<div class="input">		<input type="checkbox" name="flMarkdownProcess" value=xxx>&nbsp;Use the Markdown processor.		</div>	</div><div class="clearfix">	<label for="flAutoPublish"></label>	<div class="input">		<input type="checkbox" name="flAutoPublish" value=xxx>&nbsp;Automatically publish the current story when it's saved.		</div>	</div>	</div>
+													</fieldset>
+														</div>
+													</div>
+												</div>
 											</div>
-										</div>
-									</div>
 
 	</form>
 
@@ -152,43 +164,12 @@
 			</div>
 		<div class="divPageBody">
 			<div class="divWholePageMessage" id="idEditor" style="display: none;">
-				<form class="form-horizontal">
-					<div class="control-group">
-						<label class="control-label" for="idTitle">Title:</label>
-						<div class="controls">
-							<input type="text" id="idTitle" class="myInputItem" placeholder="Appears in the title area of the page.">
-							</div>
-						</div>
-					<div class="control-group">
-						<label class="control-label" for="idDescription">Description:</label>
-						<div class="controls">
-							<textarea class="myDescriptionArea" id="idDescription" placeholder="Appears in smaller type below the title."></textarea>
-							</div>
-						</div>
-					<div class="control-group">
-						<label class="control-label" for="idImageUrl">Image URL:</label>
-						<div class="controls">
-							<div class="divTemplateMenu" id="idTemplateMenu">
-								<select id="idTemplateSelect" onchange="templateMenuSelect ();">
-									</select>
-								</div>
-							<input type="text" id="idImageUrl" class="xlarge myInputItem imageUrlItem" placeholder="Background image of the title area of the page.">
-							</div>
-						</div>
-					<div class="control-group">
-						<label class="control-label" for="idTextArea">Body:</label>
-						<div class="controls">
-							<div class="divEditorContainer" id="idEditorContainer">
-								</div>
-							
-							<button id="idNewButton" class="btn btn-large btnNew" type="button" onclick="newButtonClick ();">New</button>
-							<button id="idPublishButton" class="btn btn-large btnPublish" type="button" onclick="publishButtonClick ();">Publish</button>
-							
-							<div class="divPublishedUrl" id="idPublishedUrl">
-								</div>
-							</div>
-						</div>
-					</form>
+				<div class="divTitleEditor" id="idTitleEditor">
+					</div>
+				<div class="divDescriptionEditor" id="idDescriptionEditor">
+					</div>
+				<div class="divBodyEditor" id="idBodyEditor">
+					</div>
 				</div>
 			<div class="divWholePageMessage" id="idLogonMessage" style="display: none;">
 				<div class="divLogonMessage">
