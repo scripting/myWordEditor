@@ -35,27 +35,31 @@
 		<div id="idSnapContent" class="snap-content">
 			<div class="divVersionNumber" id="idVersionNumber">
 				</div>
-			<div class="divMywordPage">
+			<div class="divMywordPage h-entry">
 				<div class="divPageTop" id="idPageTop">
 					<div class="divBackgroundImage" id="idBackgroundImage">
 						</div>
 					<div class="divTextBackground">
 						</div>
 					<div class="divPageTopText" id="idPageTopText">
-						<div class="divPageByline" id="idPageByline">
+						<div class="divPageByline h-card u-author" id="idPageByline">
+							by <a class="u-url p-name" href="[%authorwebsite%]">[%authorname%]</a> 
+							<a class="u-url" href="https://twitter.com/[%twscreenname%]">[%twscreenname%]</a>
 							</div>
-						<div class="divPageTitle" id="idPageTitle">
+						<div class="divPageTitle p-name" id="idPageTitle">
 							[%ogtitle%]
 							</div>
-						<div class="divPageDescription" id="idPageDescription">
+						<div class="divPageDescription p-summary" id="idPageDescription">
 							[%ogdescription%]
 							</div>
 						</div>
 					</div>
 				<div class="divPageBody">
-					<div class="divEssayText" id="idEssayText">
+					<div class="divEssayText e-content" id="idEssayText">
 						[%renderedtext%]
 						</div>
+					<a class="u-url" href="[%ogurl%]">#</a>
+					<time class="dt-published" datetime="[%when%]"></time>
 					<div class="divComments">   
 						[%disquscomments%]
 						</div>
