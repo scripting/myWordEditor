@@ -27,7 +27,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.67"
+	version: "0.68"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -82,6 +82,14 @@ var disqusCode =  //3/31/15 by DW
 
 function patchPrefs () {
 	console.log ("patchPrefs");
+	//7/24/15 by DW -- advent of the flPgfLevelMarkdown field of rssHistory objects
+		for (var i = 0; i < appPrefs.rssHistory.length; i++) {
+			var obj = appPrefs.rssHistory [i];
+			if (obj.flPgfLevelMarkdown === undefined) {
+				obj.flPgfLevelMarkdown = true;
+				prefsChanged ();
+				}
+			}
 	//3/27/15 by DW -- some early files in rssHistory have incorrect filepath fields
 		for (var i = 0; i < appPrefs.rssHistory.length; i++) {
 			var obj = appPrefs.rssHistory [i];
@@ -206,6 +214,7 @@ function fieldsToHistory () { //copy from theData into the current history array
 			obj.filepath = theData.filePath;
 			obj.linkJson = theData.linkJson;
 			obj.flMarkdown = true; //3/26/15 by DW
+			obj.flPgfLevelMarkdown = true; //7/24/15 by DW
 			historyChanged (); //3/27/15 by DW
 			break;
 			}
