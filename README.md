@@ -36,7 +36,13 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 ##### v0.69 -- 7/25/15 by DW
 
-Added <a href="http://walkthrough.rsscloud.co/">rssCloud</a> support to the RSS feed produced by MWE. The feature can be turned on in <a href="https://github.com/scripting/myWordEditor/blob/master/config.json">config.json</a>, if you're running your own MWE. I'm using <a href="http://blog.andrewshell.org/what-is-rsscloud/">Andrew Shell's</a> rssCloud <a href="http://blog.andrewshell.org/rebooting-rsscloud/">server</a> for notification, rsscloud.io.
+Added <a href="http://walkthrough.rsscloud.co/">rssCloud</a> support to the RSS feed produced by MWE. 
+
+The feature can be turned on in <a href="https://github.com/scripting/myWordEditor/blob/master/config.json">config.json</a>, if you're running your own MWE. 
+
+I'm using <a href="http://blog.andrewshell.org/what-is-rsscloud/">Andrew Shell's</a> rssCloud <a href="http://blog.andrewshell.org/rebooting-rsscloud/">server</a> for notification, rsscloud.io.
+
+Here's my <a href="http://myword.io/users/davewiner/rss.xml">RSS feed</a>, as an example.
 
 ##### v0.67 -- 7/24/15 by DW
 
