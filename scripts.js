@@ -27,7 +27,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.68"
+	version: "0.69"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -257,8 +257,13 @@ function buildHistoryMenu () { //3/27/15 by DW
 		$("#idHistoryMenuList").append (liMenuItem);
 		}
 	}
+function rssCloudPing (urlServer, urlFeed) { //7/25/15 by DW
+	$.post (urlServer, {url: urlFeed}, function (data, status) {
+		console.log ("rssCloudPing: urlServer == " + urlServer + ", urlFeed == " + urlFeed + ", status == " + status);
+		});
+	}
 function myWordBuildRssFeed () {
-	var now = new Date ();
+	var now = new Date (), flcloud = false;
 	var headElements = {
 		title: appPrefs.rssTitle,
 		link: appPrefs.rssLink,
@@ -270,12 +275,27 @@ function myWordBuildRssFeed () {
 		maxFeedItems: appPrefs.rssMaxItemsInFeed,
 		appDomain: appConsts.domain
 		}
+	if (config.rssCloud !== undefined) { //7/25/15 by DW
+		if (getBoolean (config.rssCloud.enabled)) {
+			headElements.flRssCloudEnabled = true;
+			headElements.rssCloudDomain = config.rssCloud.domain;
+			headElements.rssCloudPort = config.rssCloud.port;
+			headElements.rssCloudPath = config.rssCloud.path;
+			headElements.rssCloudRegisterProcedure = "";
+			headElements.rssCloudProtocol = "http-post";
+			flcloud = true;
+			}
+		}
 	var xmltext = buildRssFeed (headElements, appPrefs.rssHistory);
 	twUploadFile ("rss.xml", xmltext, "text/xml", false, function (data) {
 		console.log ("myWordBuildRssFeed: " + data.url + " (" + secondsSince (now) + " seconds)");
 		if (appPrefs.rssFeedUrl != data.url) {
 			appPrefs.rssFeedUrl = data.url;
 			prefsChanged ();
+			}
+		if (flcloud) { //7/25/15 by DW
+			var urlRssCloudServer = "http://" + headElements.rssCloudDomain + ":" + headElements.rssCloudPort + "/ping";
+			rssCloudPing (urlRssCloudServer, data.url);
 			}
 		});
 	}

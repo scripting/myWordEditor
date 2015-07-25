@@ -32,9 +32,17 @@ You can also change the default image for your users' blog posts, or you can lea
 
 Test the installation by logging on. Follow the <a href="http://myword.smallpict.com/2015/03/06/welcomeToMywordEditor.html">instructions</a> on the MyWord Editor blog.
 
-#### Where's the beautiful editor?
+### Updates
 
-I did a survey of the open source JavaScript editors. They are amazing. I decided that rather than pick a winner, I'd ship a pre-HTML5 &lt;textarea>-based editor, and let's see if anyone wants to take on creating a beautiful integration of the two ideas. Here's a <a href="http://scripting.com/2015/03/20/beautifulJavascriptEditors.html">blog post</a> that explains my thinking, and offers some possible next steps.
+#### v0.69 -- 7/25/15 by DW
+
+Added <a href="http://walkthrough.rsscloud.co/">rssCloud</a> support to the RSS feed produced by MWE. The feature can be turned on in <a href="https://github.com/scripting/myWordEditor/blob/master/config.json">config.json</a>, if you're running your own MWE. I'm using <a href="http://blog.andrewshell.org/what-is-rsscloud/">Andrew Shell's</a> rssCloud <a href="http://blog.andrewshell.org/rebooting-rsscloud/">server</a> for notification, rsscloud.io.
+
+#### v0.67 -- 7/24/15 by DW
+
+We now have a beautiful editor, integrated, <a href="https://github.com/yabwe/medium-editor">medium-editor</a>. Problem solved. :-)
+
+You can read about the update in this <a href="http://myword.io/users/davewiner/essays/045.html">note</a>, and a <a href="http://scripting.com/2015/07/24/mywordEditorGetsMoreBeautiful.html">blog post</a>. 
 
 #### v0.64 -- 4/3/15 by DW
 
