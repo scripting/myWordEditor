@@ -29,7 +29,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.69"
+	version: "0.70"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -37,7 +37,7 @@ var appPrefs = {
 	flAutoPublish: false,
 	flMarkdownProcess: false,
 	textFont: "Ubuntu", textFontSize: 18, textLineHeight: 24,
-	flDisqusComments: false, disqusGroupName: "smallpict",
+	flDisqusComments: true, disqusGroupName: "smallpict",
 	flRssPrefsInitialized: false, rssTitle: "", rssDescription: "", rssLink: "", rssMaxItemsInFeed: 25, rssLanguage: "en-us", 
 	rssHistory: [], rssFeedUrl: "",
 	flUseDefaultImage: false, defaultImageUrl: "",

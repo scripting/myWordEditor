@@ -34,6 +34,10 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 #### Updates
 
+##### v0.70 -- 7/25/15 by DW
+
+By default Disqus comments are now on. You can turn them off in the Settings dialog. 
+
 ##### v0.69 -- 7/25/15 by DW
 
 Added <a href="http://walkthrough.rsscloud.co/">rssCloud</a> support to the RSS feed produced by MWE. 

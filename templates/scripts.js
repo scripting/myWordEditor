@@ -195,6 +195,10 @@ function viewPostFromEditor (pagetable) {
 		if ($("#idPageFooter")) {
 			$("#idPageFooter").html ("<div class=\"divFooterText\">" + getFooterText (pagetable) + "</div>");
 			}
+	//comments -- 7/25/15 by DW
+		if (!getBoolean (pagetable.flDisqusComments)) {
+			$("#idDisqusComments").css ("display", "none");
+			}
 	
 	return; //7/23/15 by DW
 	
@@ -229,7 +233,6 @@ function viewPostFromEditor (pagetable) {
 				}
 			}
 	}
-
 function startup () {
 	var urlparam = decodeURIComponent (getURLParameter ("url")), urlEssay = "essay.json", jstruct, imgurl = defaultImageUrl;
 	var tocparam = decodeURIComponent (getURLParameter ("tocOpen")), flSnapOpenInitially = false;
@@ -248,7 +251,6 @@ function startup () {
 		}
 	initSnap (flSnapOpenInitially);
 	readLinksFromRss (pagetable.rssfeedurl, "idLinksToPosts");
-	
 	if ((pagetable !== undefined) && (pagetable.flFromEditor)) {
 		viewPostFromEditor (pagetable);
 		self.setInterval (everySecond, 1000); 
