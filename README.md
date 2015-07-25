@@ -32,67 +32,67 @@ You can also change the default image for your users' blog posts, or you can lea
 
 Test the installation by logging on. Follow the <a href="http://myword.smallpict.com/2015/03/06/welcomeToMywordEditor.html">instructions</a> on the MyWord Editor blog.
 
-### Updates
+#### Updates
 
-#### v0.69 -- 7/25/15 by DW
+##### v0.69 -- 7/25/15 by DW
 
 Added <a href="http://walkthrough.rsscloud.co/">rssCloud</a> support to the RSS feed produced by MWE. The feature can be turned on in <a href="https://github.com/scripting/myWordEditor/blob/master/config.json">config.json</a>, if you're running your own MWE. I'm using <a href="http://blog.andrewshell.org/what-is-rsscloud/">Andrew Shell's</a> rssCloud <a href="http://blog.andrewshell.org/rebooting-rsscloud/">server</a> for notification, rsscloud.io.
 
-#### v0.67 -- 7/24/15 by DW
+##### v0.67 -- 7/24/15 by DW
 
 We now have a beautiful editor, integrated, <a href="https://github.com/yabwe/medium-editor">medium-editor</a>. Problem solved. :-)
 
 You can read about the update in this <a href="http://myword.io/users/davewiner/essays/045.html">note</a>, and a <a href="http://scripting.com/2015/07/24/mywordEditorGetsMoreBeautiful.html">blog post</a>. 
 
-#### v0.64 -- 4/3/15 by DW
+##### v0.64 -- 4/3/15 by DW
 
 Run config.startupCode at startup. See <a href="http://myword.smallpict.com/2015/04/03/codeThatRunsAtStartup.html">blog post</a> for details.
 
-#### v0.63 -- 4/2/15 by DW
+##### v0.63 -- 4/2/15 by DW
 
 Took a step toward <a href="http://myword.smallpict.com/2015/04/02/towardEditorPlugins.html">editor plug-ins</a>. 
 
-#### v0.62 -- 4/1/15 by DW
+##### v0.62 -- 4/1/15 by DW
 
 Support for Disqus comments. See this <a href="http://myword.smallpict.com/2015/04/01/disqusCommentsInMyword.html">blog post</a> for details.
 
-#### v0.61 -- 3/31/15 by DW
+##### v0.61 -- 3/31/15 by DW
 
 Add scalars from appConsts and appPrefs to the pagetable in the rendered page. This allows scripts running in the page to know the title of the site, the version of MWE that created the page, etc.
 
 In the title of essay pages, we use the author's name if it's available instead of the name of the product. So a story might say "Jordan Jones: What I want for Christmas" instead of "MyWord Editor: What I want for Christmas". 
 
-#### v0.60 -- 3/30/15 by DW
+##### v0.60 -- 3/30/15 by DW
 
 This is the first release of MWE with <a href="http://myword.smallpict.com/2015/03/30/templatesInMyword.html">template</a> support. Be sure to read the note about breakage on that page. Any work you do with templates now is likely to break. 
 
-#### v0.59 -- 3/27/15 by DW
+##### v0.59 -- 3/27/15 by DW
 
 First source release of the JavaScript code and CSS styles used in the rendered pages. Explained in this <a href="http://myword.smallpict.com/2015/03/27/mywordEditorV059.html">blog post</a>. 
 
-#### v0.58 -- 3/27/15 by DW
+##### v0.58 -- 3/27/15 by DW
 
 The *Open file* command in the Editor menu is replaced by a new History menu. Explained in this <a href="http://myword.smallpict.com/2015/03/27/theHistoryMenu.html">blog post</a>.
 
-#### v0.57 -- 3/26/15 by DW
+##### v0.57 -- 3/26/15 by DW
 
 There were lots of debugging calls to console.log that displayed huge data structures. I quieted them down, so we get simpler readouts from the console, now that this code isn't so new. Changed the <i>urlTemplateFile</i> constant to be a relative URL, relative to the folder MWE is running from. That way I can change the template on my server without changing it on everyone's. Still more of this kind of factoring to do. Must move carefully (slowly).
 
-#### v0.56 -- 3/26/15 by DW
+##### v0.56 -- 3/26/15 by DW
 
 New supported value in config.json -- googleAnalyticsAccount. If specified, we use it in <a href="https://github.com/scripting/myWordEditor/blob/master/lib/ga.js">ga.js</a> to make calls to Google Analytics. 
 
-#### v0.55 -- 3/26/15 by DW
+##### v0.55 -- 3/26/15 by DW
 
 Change notes in this <a href="http://myword.smallpict.com/2015/03/26/mywordEditorV055.html">blog post</a>.
 
-#### v0.54 -- 3/24/15 by DW
+##### v0.54 -- 3/24/15 by DW
 
 A new command in the Editor menu: <i>Publish all posts.</i> After confirmation, it opens each of your posts and does exactly what clicking on the Publish button would do. I added this feature because I wanted a quick way to re-generate all the files. It'll be useful if there's a template change, or other change that requires a complete rebuild of a blog.
 
 Also improved the <a href="http://scripting.com/2015/03/24/errorDialog.png">error dialog</a> on startup, if there was an error connecting to the server, it would report the problem as the user not being whitelisted. Usually the problem is the URL of the nodeStorage server was not correctly specified. I got bit by this myself. We needed a better message here. 
 
-#### v0.53 -- 3/24/15 by DW
+##### v0.53 -- 3/24/15 by DW
 
 In addition to generating an HTML file for each essay, we also generate a JSON file. <a href="http://myword.io/users/davewiner/essays/017.json">Example</a>. I think this will be generally useful, I want to use it immediately to try to create a home page essay browser, using snap.js. There's a corresponding <a href="https://github.com/scripting/myWordEditor/blob/master/lib/buildrss.js#L146">element</a> in the RSS feed, called &lt;source:linkJson>. 
 
