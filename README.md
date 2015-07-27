@@ -34,6 +34,10 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 #### Updates
 
+##### v0.72 -- 7/27/15 by DW
+
+Added <s>strikethrough</s> button to the toolbar, demonstrating that we can add items to the toolbar. They come from <a href="https://github.com/yabwe/medium-editor#all-buttons">this list</a>. 
+
 ##### v0.71 -- 7/27/15 by DW
 
 Add Facebook and Twitter metadata to the &lt;head> section of the home page.

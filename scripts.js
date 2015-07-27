@@ -29,7 +29,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.71"
+	version: "0.72"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -75,6 +75,7 @@ var whenLastUserAction = new Date (), whenLastKeystroke = whenLastUserAction;
 var randomMysteryString, ctCloseAttempts = 0;
 var fnameconfig = "config.json"; //3/20/15 by DW
 var config; //3/28/15 by DW
+var defaultEditorButtons = ["bold", "italic", "underline", "strikethrough", "anchor", "h2", "h3", "quote"]; //7/27/15 by DW
 var defaultTemplates = {
 	"Default": "http://myword.io/templates/default.html",
 	"Plain": "http://myword.io/templates/plain/template.html"
@@ -369,6 +370,9 @@ function setEditorFields (titletext, descriptiontext, bodytext) {
 		placeholder: {
 			text: "Title"
 			},
+		toolbar: {
+			buttons: defaultEditorButtons,
+			},
 		buttonLabels: "fontawesome",
 		disableReturn: true
 		});
@@ -378,6 +382,9 @@ function setEditorFields (titletext, descriptiontext, bodytext) {
 		placeholder: {
 			text: "Description"
 			},
+		toolbar: {
+			buttons: defaultEditorButtons,
+			},
 		buttonLabels: "fontawesome",
 		disableReturn: true
 		});
@@ -386,6 +393,9 @@ function setEditorFields (titletext, descriptiontext, bodytext) {
 	var editorBody = new MediumEditor (".divBodyEditor", {
 		placeholder: {
 			text: "Tell your story..."
+			},
+		toolbar: {
+			buttons: defaultEditorButtons,
 			},
 		buttonLabels: "fontawesome"
 		});
@@ -856,8 +866,4 @@ function startup () {
 			showHideEditor ();
 			}
 		});
-	
-	
-	
-	
 	}
