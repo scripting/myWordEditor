@@ -40,6 +40,19 @@
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Merriweather:400,700,700italic,400italic' rel='stylesheet' type='text/css'>
 		
+		<!-- Facebook metadata -->
+			<meta property="og:url" content="http://myword.io/editor/" />
+			<meta property="og:type" content="website" />
+			<meta property="og:title" content="MyWord Editor" />
+			<meta property="og:description" content="A simple silo-free blogging tool that creates beautiful essay pages." />
+			<meta property="og:image" content="http://static.scripting.com/larryKing/images/2014/02/03/clouds.jpg" />
+			<meta property="og:site_name" content="MyWord Editor" />
+		<!-- Twitter metadata -->
+			<meta name="twitter:card" content="summary_large_image">
+			<meta name="twitter:site" content="@davewiner">
+			<meta name="twitter:title" content="MyWord Editor">
+			<meta name="twitter:description" content="A simple silo-free blogging tool that creates beautiful essay pages.">
+			<meta name="twitter:image:src" content="http://static.scripting.com/larryKing/images/2014/02/03/clouds.jpg">
 		</head>
 	<body>
 		<div class="divMenubar" id="idMenubar">
@@ -116,34 +129,34 @@
 	<div class="divTabsFromOutline">
 	<div class="tabbable">
 		<ul class="nav nav-tabs" data-tabs="tabs">
-			<li class="active" ><a href="#idYou437"  data-toggle="tab">You</a></li>
-			<li><a href="#idFeed437"  data-toggle="tab">Feed</a></li>
-			<li><a href="#idImage437"  data-toggle="tab">Image</a></li>
-			<li><a href="#idCms437"  data-toggle="tab">CMS</a></li>
-			<li><a href="#idPublish437"  data-toggle="tab">Publish</a></li>
+			<li class="active" ><a href="#idYou84"  data-toggle="tab">You</a></li>
+			<li><a href="#idFeed84"  data-toggle="tab">Feed</a></li>
+			<li><a href="#idImage84"  data-toggle="tab">Image</a></li>
+			<li><a href="#idCms84"  data-toggle="tab">CMS</a></li>
+			<li><a href="#idPublish84"  data-toggle="tab">Publish</a></li>
 			</ul>
 		<div id="my-tab-content" class="tab-content">
-			<div class="active tab-pane" id="idYou437">
+			<div class="active tab-pane" id="idYou84">
 				<fieldset>
 					<div class="divPrefs">	<div class="clearfix">	<label for="authorName">Name:</label>	<div class="input">		<input class="xlarge prefsInput" id="authorName" name="authorName" size="50" type="text" value="" placeholder="Your name." />		</div>	</div><div class="clearfix">	<label for="authorWebsite">Website:</label>	<div class="input">		<input class="xlarge prefsInput" id="authorWebsite" name="authorWebsite" size="50" type="text" value="" placeholder="Your website." />		</div>	</div>	</div>
 					</fieldset>
 						</div>
-					<div class="tab-pane" id="idFeed437">
+					<div class="tab-pane" id="idFeed84">
 						<fieldset>
 							<div class="divPrefs">	<p>You can set the title, link and description for the RSS feed that Radio3 maintains.</p><div class="clearfix">	<label for="rssTitle">Title:</label>	<div class="input">		<input class="xlarge prefsInput" id="rssTitle" name="rssTitle" size="50" type="text" value="" placeholder="The &lt;title> element for the feed." />		</div>	</div><div class="clearfix">	<label for="rssLink">Link:</label>	<div class="input">		<input class="xlarge prefsInput" id="rssLink" name="rssLink" size="50" type="text" value="" placeholder="The &lt;link> element for the feed." />		</div>	</div><div class="clearfix">	<label for="rssDescription">Description:</label>	<div class="input">		<textarea class="xxlarge" id="rssDescription" name="rssDescription" cols="70" rows="3"placeholder="The &lt;description> element for the feed." ></textarea>		</div>	</div>	</div>
 							</fieldset>
 								</div>
-							<div class="tab-pane" id="idImage437">
+							<div class="tab-pane" id="idImage84">
 								<fieldset>
 									<div class="divPrefs">	<div class="clearfix">	<label for="flUseDefaultImage"></label>	<div class="input">		<input type="checkbox" name="flUseDefaultImage" value=xxx>&nbsp;Use default image if no image is specified.		</div>	</div><div class="clearfix">	<label for="defaultImageUrl">URL:</label>	<div class="input">		<input class="xlarge prefsInput" id="defaultImageUrl" name="defaultImageUrl" size="50" type="text" value="" placeholder="We'll use this image for essays where no image is specified." />		</div>	</div>	</div>
 									</fieldset>
 										</div>
-									<div class="tab-pane" id="idCms437">
+									<div class="tab-pane" id="idCms84">
 										<fieldset>
 											<div class="divPrefs">	<div class="clearfix">	<label for="nameDefaultTemplate">Template name:</label>	<div class="input">		<input class="xlarge prefsInput" id="nameDefaultTemplate" name="nameDefaultTemplate" size="50" type="text" value="" placeholder="The name of the template to use for new essays." />		</div>	</div><div class="clearfix">	<label for="flDisqusComments"></label>	<div class="input">		<input type="checkbox" name="flDisqusComments" value=xxx>&nbsp;Include Disqus comments on your pages?		</div>	</div><div class="clearfix">	<label for="disqusGroupName">Group name:</label>	<div class="input">		<input class="xlarge prefsInput" id="disqusGroupName" name="disqusGroupName" size="50" type="text" value="" placeholder="The name of your Disqus comment group." />		</div>	</div>	</div>
 											</fieldset>
 												</div>
-											<div class="tab-pane" id="idPublish437">
+											<div class="tab-pane" id="idPublish84">
 												<fieldset>
 													<div class="divPrefs">	<div class="clearfix">	<label for="flMarkdownProcess"></label>	<div class="input">		<input type="checkbox" name="flMarkdownProcess" value=xxx>&nbsp;Use the Markdown processor.		</div>	</div><div class="clearfix">	<label for="flAutoPublish"></label>	<div class="input">		<input type="checkbox" name="flAutoPublish" value=xxx>&nbsp;Automatically publish the current story when it's saved.		</div>	</div>	</div>
 													</fieldset>

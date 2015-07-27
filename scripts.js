@@ -29,12 +29,12 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.70"
+	version: "0.71"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
 	ctStartups: 0, minSecsBetwAutoSaves: 3,
-	flAutoPublish: false,
+	flAutoPublish: true,
 	flMarkdownProcess: false,
 	textFont: "Ubuntu", textFontSize: 18, textLineHeight: 24,
 	flDisqusComments: true, disqusGroupName: "smallpict",

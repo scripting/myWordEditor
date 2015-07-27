@@ -34,6 +34,12 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 #### Updates
 
+##### v0.71 -- 7/27/15 by DW
+
+Add Facebook and Twitter metadata to the &lt;head> section of the home page.
+
+Changed the default value of the <i>flAutoPublish</i> setting from false to true. This is the behavior I demo in the <a href="https://www.youtube.com/watch?v=AdddswiXm5g&feature=youtu.be">video</a>, and it seems to be what people expect. 
+
 ##### v0.70 -- 7/25/15 by DW
 
 By default Disqus comments are now on. You can turn them off in the Settings dialog. 
