@@ -1,0 +1,12 @@
+{
+  "name": "myWordEditor",
+  "description": "an exciting JS based open word editor",
+  "version": "0.65.0",
+  "license" : "SEE LICENSE IN LICENSE",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-connect": "^0.10.1",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}

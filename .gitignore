@@ -1,0 +1,6 @@
+# a generic .gitignore for IDE stuff and/or anything else
+
+npm-debug.log
+.idea
+node_modules
+.DS_Store
