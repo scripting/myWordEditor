@@ -34,6 +34,10 @@ Test the installation by logging on. Follow the <a href="http://myword.smallpict
 
 #### Updates
 
+##### v0.73 -- 9/19/17 by DW
+
+Changed URLs in includes in &lt;head> section of index.html to not be specific to HTTP, so that <a href="https://github.com/scripting/myWordEditor/issues/4">people</a> can run their nodeStorage servers behind HTTPS.
+
 ##### v0.72 -- 7/27/15 by DW
 
 Added <s>strikethrough</s> button to the toolbar, demonstrating that we can add items to the toolbar. They come from <a href="https://github.com/yabwe/medium-editor#all-buttons">this list</a>. 

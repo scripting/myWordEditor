@@ -29,7 +29,7 @@ var appConsts = {
 	"description": "A simple silo-free blogging tool that creates beautiful essay pages.",
 	urlTwitterServer: "http://twitter.myword.io/", //backup, in case config.json is missing
 	domain: "myword.io", //the real value is set in startup () 
-	version: "0.72"
+	version: "0.73"
 	};
 var appPrefs = {
 	authorName: "", authorWebsite: "",
@@ -528,6 +528,8 @@ function publishButtonClick (flInteract, callback) {
 			rssfeedurl: appPrefs.rssFeedUrl,
 			nametemplate: theData.nameTemplate, //3/28/15 by DW
 			urltemplate: urlTemplate, //3/29/15 by DW
+			username: username, //8/7/15 PM by DW -- the user's screenname without the leading @
+			urltwitterprofile: "https://twitter.com/" + username, //8/7/15 by DW
 			appConsts: new Object (), //3/30/15 by DW
 			appPrefs: new Object () //3/30/15 by DW
 			};
@@ -544,6 +546,7 @@ function publishButtonClick (flInteract, callback) {
 			twUploadFile (filepath, renderedtext, "text/html", false, function (data) {
 				console.log ("publishButtonClick: " + data.url + " (" + secondsSince (now) + " seconds)"); 
 				theData.publishedUrl = data.url;
+				appPrefs.lastPublishedUrl = data.url; //7/29/15 by DW
 				callback (data);
 				});
 			});
